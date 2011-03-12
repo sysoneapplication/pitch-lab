@@ -1,6 +1,11 @@
 package pitchLab.modes.activePitch;
-/*
- * 	This class is meant to be a sub class to store test results in an array
+
+/**
+ * This class is meant to be a sub-class that stores test results into an array
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 20, 2009
+ * 	
  */
 public class AP_TestData
 {
