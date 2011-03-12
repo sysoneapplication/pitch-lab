@@ -646,10 +646,10 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
 		return showCurrentSel.getState();
 	}
 	
-	/****************************************************************************************
-	 *	END get/set methods
-	 *	BEGIN MAIN
-	 ****************************************************************************************/	
+	 //
+	 //	END get/set methods
+	 //	BEGIN MAIN
+	 //
 		
 	
     /**
