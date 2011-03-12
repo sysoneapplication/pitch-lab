@@ -735,7 +735,11 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
        
     }
 	
-	
+	/**
+	 * Sets the action that will be performed based on the event parameter.
+     * 
+     * @param e The type of action that governs what the method will do.
+	 */
 	public void actionPerformed(ActionEvent e) 
 	{		
 		
