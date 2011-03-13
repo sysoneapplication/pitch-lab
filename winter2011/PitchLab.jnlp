@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<jnlp spec="1.0+" codebase="http://128.95.101.226" href="pitchLabLive.jnlp">
+<jnlp spec="1.0+" codebase="http://pitch-lab.googlecode.com/svn/trunk" href="PitchLab.jnlp">
 
    <information>
-      <title> PitchLabLive </title>
+      <title>Pitch Lab</title>
 	  
       <vendor>Physics of Sound Acoustics Lab, University Of Washington</vendor>
 	  
       <description>Pitch Lab</description>
 	  
-      <homepage href="http://128.95.101.226"/>
+      <homepage href="http://code.google.com/p/pitch-lab/"/>
 	  
       <description kind="short">Tests & collects data on Pitch Perception</description>
 	  
@@ -21,7 +21,7 @@
    
    	<j2se version="1.6+" />
 	   
-   	<jar href="PitchLab-V0.8.jar"/>   
+   	<jar href="PitchLab.jar"/>   
 	
    </resources>
 	
