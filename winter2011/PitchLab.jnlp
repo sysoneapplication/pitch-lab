@@ -29,5 +29,5 @@
 	<all-permissions/>
    </security>
    
-   <application-desc main-class="pitchLab.MainWindow"/>
+   <application-desc main-class="pitchLab.mainWindow.MainWindow"/>
 </jnlp>
