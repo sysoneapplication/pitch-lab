@@ -1,11 +1,17 @@
 package pitchLab.reference;
 
+/**
+ * Sets the global constants used by PitchLab
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 7, 2009
+ * 
+ */
+
 public class Constants
 {
 	
-	//
 	//	MODES:
-	//
 	public static final int DEFAULT = 0;
 	public static final int PASSIVE_PITCH = 1;
 	public static final int ACTIVE_PITCH = 2;
@@ -16,11 +22,8 @@ public class Constants
 	public static final int PR_PRACTICE = 13;
 	public static final int AR_PRACTICE = 14;
 	
-	//
 	//	SOUND / AUDIO CONSTANTS
-	//
-	
-		public static final int CENTS_PER_OCTAVE = 1200;
+    public static final int CENTS_PER_OCTAVE = 1200;
 	public static final int CENTS_PADDING_AT_ENDS = 50; // number of cents of "padding" (allowable tones below bottom note)
 	public static final int CENT_FULL_SCALE = CENTS_PER_OCTAVE+2*CENTS_PADDING_AT_ENDS;  // used for VISIBLE scale
 	public static final double C0 = 16.35; //hz (bottom octave)
@@ -30,9 +33,7 @@ public class Constants
 											"octave + 3M","octave + p4","octave + a4/d5","octave + p5",
 											"octave + 6m","octave + 6M"};
 	
-	//
 	//	PianoWindow Constants
-	//
 	public static final int LONG_WINDOW_WIDTH = 1300; 
 	public static final int SHORT_WINDOW_WIDTH = 650;
 	public static final int WINDOW_HEIGHT = 400;

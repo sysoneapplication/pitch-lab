@@ -3,6 +3,14 @@ package pitchLab.reference;
 import sound.Sine;
 
 
+/**
+ * This class does all the calculations needed to create tones, pixel positions and anything
+ * else requring math.
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 7, 2009
+ */
+
 public class Calculations
 {
 	/**
@@ -31,7 +39,7 @@ public class Calculations
 			return "mode error   " + Constants.SCALE[noteIndex]+ " " + centsError + " cents";
 		
 
-	}//end xToCents
+	}
 	
 	
 	// ---------------------------------------
@@ -40,9 +48,11 @@ public class Calculations
 	// ---------------------------------------
 	
 	/**
+     * Determines whether to convert a frequency to notes with cents
+     * or without cents.
 	 * 
 	 * @param freq
-	 * @return
+	 * @return A string of the converted frequency either with or without cents.
 	 */
 	public static String freqToProperNote(double freq)
 	{
@@ -53,9 +63,10 @@ public class Calculations
 	}
 	
 	/**
-	 * 
-	 * @param freq
-	 * @return
+	 * Converts a frequency to notes plus cents - and octive index
+     *
+	 * @param freq The current frequency
+     * @return String of the converted frequency
 	 */
 	public static String freqToCents(double freq)
 	{
@@ -66,12 +77,13 @@ public class Calculations
 		int centsError = (int)(relCentsToNote - noteIndex*100);
 		
 		return Constants.SCALE[noteIndex]+ "_" +octaveIndex + " " + centsError + " Cents";
-	}//end 
+	}
 	
 	/**
+	 * Converts a frequency to notes without cents - and octive index
 	 * 
 	 * @param freq
-	 * @return
+	 * @return String of the converted frequency
 	 */
 	public static String freqToNote(double freq)
 	{
@@ -80,9 +92,10 @@ public class Calculations
 	}
 	
 	/**
-	 * 
-	 * @param freq
-	 * @return
+     * Determines the current frequency octave based with logarithm
+     *
+	 * @param freq The current frequency
+	 * @return The current octave
 	 */
 	public static int getCOctaveIndex(double freq)
     {
@@ -90,9 +103,10 @@ public class Calculations
     }
     
 	/**
+     * Determines the relative cents of the current frequency
 	 * 
-	 * @param freq
-	 * @return
+	 * @param freq The current frequency
+	 * @return The relative cents 
 	 */
     public static int getRelCentsToNote(double freq)
     {
@@ -100,10 +114,12 @@ public class Calculations
     }
     
     /**
-     * 
-     * @param freq
-     * @param octaveIndex
-     * @return
+     * Converts the current frequency to cents using logarithm 
+     *
+     * @param freq The frequency
+     * @param octaveIndex The current octave the frequency is in
+     *
+     * @return The converted frequency into relative cents
      */
     public static int getRelCentsToNote(double freq, int octaveIndex)
     {
@@ -111,9 +127,10 @@ public class Calculations
     }
     
     /**
-     * 
-     * @param relCentsToNote
-     * @return
+     * Converts relative cents to x-coordinate position for GUI
+     *
+     * @param relCentsToNote The currently calculated relative cents
+     * @return The new x position
      */
     public static int getNoteIndex(int relCentsToNote)
     {
@@ -127,23 +144,24 @@ public class Calculations
 		   return pm_pos/2;
     }
 	
-    //  ===   Interval methods
-    
    /**
-    * 
-    * @param freq1
-    * @param freq2
-    * @return
+    * Finds the frequency difference between two frequencies via logarithm
+    *
+    * @param freq1 The first frequency
+    * @param freq2 The second frequency
+    * @return The frequency 
     */
     public static int calcCentsInterval(double freq1, double freq2)
     {
     	return (int)(1200*(Math.log(freq2/freq1)/Math.log(2) ) );
     }
+
     /**
+     * Calculates the error in the cents 
      * 
-     * @param centsInterval
-     * @param intervalIndex
-     * @return
+     * @param centsInterval The cent interval 
+     * @param intervalIndex The interval index
+     * @return Absolute value of error
      */
     public static int getCentsError(int centsInterval, int intervalIndex)
     {
@@ -151,9 +169,7 @@ public class Calculations
     }
     
     /**
-     * 
-     * @param centsInterval
-     * @return
+     * Find cent interval index based on current centsInterval:
      */
     public static int getIntervalIndex(int centsInterval)
     {
@@ -161,10 +177,11 @@ public class Calculations
     }
     
     /**
-     * 
-     * @param centsInterval
-     * @param intervalIndex
-     * @return
+     * Determines what string to return indicating the cents interval
+     *
+     * @param centsInterval The cents interval
+     * @param intervalIndex The interval index
+     * @return String of the cents interval difference
      */
     public static String getIntervalCents(int centsInterval, int intervalIndex)
     {	
@@ -175,10 +192,12 @@ public class Calculations
     }
     
     /**
-     * 
-     * @param centsInterval
-     * @param intervalIndex
-     * @return
+     * Determines what string to return indicating the cents interval
+     *
+     * @param centsInterval The cents interval
+     * @param intervalIndex The interval index
+     *
+     * @return String of new interval index without the cents
      */
     public static String getIntervalNoCents(int centsInterval, int intervalIndex)
     {		
@@ -189,10 +208,10 @@ public class Calculations
     }
     
     /**
-     * 
-     * @param freq1
-     * @param freq2
-     * @return
+     * Get the tone interval between two frequencies
+     * @param freq1 First frequency
+     * @param freq2 Second frequency
+     * @return The tone interval
      */
     public static String getToneInterval (double freq1, double freq2)
     {
@@ -200,9 +219,11 @@ public class Calculations
     }
     
     /**
-     * 
-     * @param centsInterval
-     * @return
+     * Depending on if the cents are being shown, return the tone interval
+     *
+     * @param centsInterval The current cents interval
+     *
+     * @return Tone interval with or without cents
      */
     public static String getToneInterval(int centsInterval)
     {   	
@@ -213,7 +234,8 @@ public class Calculations
     }
 
 	/**
-	 * 
+	 * Sets the base frequency based on the random sine generator and upper and lower limits
+     * the frequency bounds.
 	 */
 	public static void setActiveBaseFreq()
 	{
@@ -222,10 +244,10 @@ public class Calculations
 	}
 	
 	/**
-	 * 
-	 * @param freq1
-	 * @param freq2
-	 * @return
+	 * Determine the cent scale for a given window
+     * @param freq1 First frequency
+     * @param freq2 Second frequency
+	 * @return The calculated cents interval between two frequencies
 	 */
 	public static double getWindowCentScale(double freq1,double freq2)
 	{
@@ -233,8 +255,9 @@ public class Calculations
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Calculate a random x-coordinate that is inside the window width
+     *
+	 * @return A random x-coordinate
 	 */
 	public static int randXpos()
 	{
@@ -242,10 +265,11 @@ public class Calculations
 	}
 	
 	/**
-	 * 
-	 * @param xmin
-	 * @param xmax
-	 * @return
+	 * Calculate a random x-coordinate that is inside the window width
+     *
+	 * @param xmin Minimum allowed value based on window width
+	 * @param xmax Maximum allowed value based on window width
+	 * @return Integer of a random x-coordinate
 	 */
 	public static int randXpos(int xmin, int xmax)
 	{
@@ -253,9 +277,9 @@ public class Calculations
 	}
 	
 	/**
-	 * 
-	 * @param freq
-	 * @return
+	 * Converts a frequency to an x-coordinate 
+	 * @param freq The current frequency
+	 * @return The corresponding x-coordinate 
 	 */
 	public static int freqToX(double freq)
 	{
@@ -263,9 +287,11 @@ public class Calculations
 	}
 	
 	/**
-	 * 
-	 * @param xPos
-	 * @return
+	 * Converts a frequency from the current x-coordinate
+     *
+	 * @param xPos Current x-coordinate
+     *
+	 * @return The corresponding frequency
 	 */
 	public static double frequencyFromX(int xPos)
 	{
