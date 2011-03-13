@@ -2,16 +2,16 @@
 
     <property name="src.dir"     value="src"/>
 
-    <property name="build.dir"   value="build"/>
+    <property name="build.dir"   value="."/>
     <property name="classes.dir" value="${build.dir}/classes"/>
-    <property name="jar.dir"     value="${build.dir}/jar"/>
+    <property name="jar.dir"     value="${build.dir}"/>
 
     <property name="main-class"  value="pitchLab.mainWindow.MainWindow"/>
 
 
 
     <target name="clean">
-        <delete dir="${build.dir}"/>
+        <delete dir="${classes.dir}"/>
     </target>
 
     <target name="compile">
