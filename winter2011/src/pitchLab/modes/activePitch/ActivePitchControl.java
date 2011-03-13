@@ -11,6 +11,13 @@ import pitchLab.pianoWindow.PianoWindow;
 import pitchLab.reference.Calculations;
 import pitchLab.reference.DynmVar;
 
+/**
+ * This class defines the Active Pitch mode used in PitchLab
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 20, 2009
+ */
+
 public class ActivePitchControl extends pitchLab.pianoWindow.PianoWindowListener
 { 
 	PianoWindow pw;
