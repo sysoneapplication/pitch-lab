@@ -1,16 +1,7 @@
 package pitchLab.pianoWindow;
-//
-//  PianoWindow.java
-//  (this is version 0.6)  
-//	
-//
-//  Created by Gavin Shriver on 4/7/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
-//
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 
 
 import pitchLab.instructWindow.InstructionWindow;
@@ -36,38 +27,39 @@ import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
 
 
-/*
- *
- *  
- *  TODO:
- * 	fix file writing... not outputting the correct "user selected"
- *  in active mode
- *  
- *  TODO:
- *  passive relative training has issue with timer.. its off.. not producing miliseconds
- * 
- */
 
+/**
+ * Generates the Piano Window used during PitchLab tests
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 7, 2009
+ * 
+ *
+ * TODO:
+ * Fix file writing... not outputting the correct "user selected" in active mode
+ *  
+ * TODO:
+ * Passive relative training has issue with timer.. its off.. not producing milliseconds
+ *
+ */
 
 public class PianoWindow  extends JFrame implements WindowListener
 {
 
+    /**
+     * Gives a margin on the bar that the user drags across the piano so 
+     * the user doesn't have to click the exact pixel but instead 
+     * has a bit of leeway. 
+     *
+     * @param mouseX The x-coordinate of the the mouse with respect to the Piano Window
+     */
 	public static boolean isMouseWithinDragBarMargin(int mouseX)
 	{
 		return DynmVar.dragBarX - Constants.DRAG_BAR_MARGIN <= mouseX && mouseX <= DynmVar.dragBarX + Constants.DRAG_BAR_MARGIN;
 	}
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	/****************************************************************************************
-	 *	BEGIN Defining Variables 
-	 ****************************************************************************************/	
-	
-	// ------------------------------ MOUSE ACTION ------------------------------ //
-	
-	// ------------------------------ OUTPUT DEPENDENCIES ------------------------------//
+
 	public FileUtilClient dataHardCopy;
 	//private static final String HOST = "acoustix.mine.nu";
 	//private Registry registry;// = LocateRegistry.getRegistry(HOST);
@@ -75,7 +67,6 @@ public class PianoWindow  extends JFrame implements WindowListener
 	
 	private boolean dragBarVisible = true;
 	
-	// --- additional classes to call:
 	private Sine sineWave = new Sine();
 	public SineContinuous contSine = new SineContinuous();
 	
@@ -83,29 +74,25 @@ public class PianoWindow  extends JFrame implements WindowListener
 	public InstructionWindow instruct;
 	public GToolTip toolTip;
 
-	/****************************************************************************************
-	 *	END Defining Public Variables 
-	 *	BEGIN Main
-	 ****************************************************************************************/				
 	
+    /**
+     * Open the Piano Window and set its visibility to true
+     */
 	public static void main (String args[])
 	{
 		DynmVar.syncResults = false;
 		PianoWindow drawing = new PianoWindow(Constants.AR_PRACTICE, 14);
 		drawing.setVisible(true);
-		
-	}//end main
+	}
 	
 	
-	/****************************************************************************************
-	 *	END Main
-	 *	BEGIN Constructors
-	 ****************************************************************************************/	
-	// ---------------------------------------
-	//  initializes the piano window
-	// with settings appropriate for the mode
-	// ---------------------------------------
-
+    /**
+     * Initializes the piano window with appropriate settings
+     * based on the mode PitchLab is currently in
+     *
+     * @param mode The mode PitchLab is currently in
+     * @param cycles The number of test cycles that will be performed
+     */
 	public PianoWindow(int mode, int cycles)
 	{
 			
@@ -142,11 +129,12 @@ public class PianoWindow  extends JFrame implements WindowListener
 		
 	}	
 
-	/****************************************************************************************
-	 *	END Constructors
-	 *	BEGIN constructor helpers
-	 ****************************************************************************************/
+    //	BEGIN constructor helpers
 	
+    /**
+     * Checks if the user has requested his or her results to be submitted
+     * and if so sets up the data to do so.
+     */
 	private void initializeVariables()
 	{
 	
@@ -164,6 +152,9 @@ public class PianoWindow  extends JFrame implements WindowListener
 		}
 	}
 	
+    /**
+     * Sets the title of the Piano Window before the intial test has started.
+     */
 	private void initializeWindow()
 	{
 		this.setTitle(" Press the \"Enter\" key to begin. ");
@@ -171,6 +162,10 @@ public class PianoWindow  extends JFrame implements WindowListener
 		this.pack();
 	}
 	
+    /**
+     * Initializes the piano window event listeners and adjusts them 
+     * accordingly based on what mode PitchLab is in
+     */
 	private void initializeListeners()
 	{		
 		//--- Window Listeners (on close)
@@ -280,19 +275,22 @@ public class PianoWindow  extends JFrame implements WindowListener
 		
 	}
 	
-	/****************************************************************************************
-	 *	END constructor helpers
-	 *	BEGIN Window Events
-	 ****************************************************************************************/
+    // BEGIN Window Events
 	
-	// ---------------------------------------
-	// On attempted window close
-	// ---------------------------------------
+    /**
+     * Set the Piano Window close event
+     *
+     * @param e The event that triggers when the piano window closes
+     */
 	public void windowClosing(WindowEvent e)
 	{
 		exiting();
-	}//end windowClosing
+	}
 	
+    /**
+     * Called when the Piano Window closes and prompts the user with an
+     * alert box asking to confirm exiting the test.
+     */
 	public void exiting()
 	{
 		int exitAnswer = JOptionPane.showConfirmDialog(null, 
@@ -303,9 +301,13 @@ public class PianoWindow  extends JFrame implements WindowListener
 			exit();
 	}
 	
+    /**
+     * Called after the user has confirmed Exiting the PitchLab test.
+     * Ends any sine wave thats playing, resets the count and if the user
+     * has selected to submit results, the test results are emailed.
+     */
 	public void exit()
 	{
-		//tieing up loose ends
 		contSine.stop();
 		contSine.end();
 		DynmVar.count = 0; 
@@ -315,54 +317,49 @@ public class PianoWindow  extends JFrame implements WindowListener
 			dataHardCopy.emailResults();
 		}
 		this.dispose();
-		
 	}
 	
 	
 
 	
-	/****************************************************************************************
-	 *	END Window Events
-	 *	BEGIN random methods
-	 ****************************************************************************************/	
+    // BEGIN random methods
 
-
-	// ---------------------------------------
-	// Stamps the times by adding them to 
-	// the appropriate time arrays
-	// used by all modes
-	// ---------------------------------------
-	public void timeStamp(long time) //ms
+    /**
+     * Timestamp in milliseconds that is added to the time array used by all PitchLab 
+     * modes.
+     *
+     * @param time The time in milliseconds
+     */
+	public void timeStamp(long time)
 	{		
-		dataHardCopy.appendNewLine(Long.toString(time));//in ms
-    }//end timeStamper
+		dataHardCopy.appendNewLine(Long.toString(time));
+    }
     
-	
-	// ---------------------------------------
-	// playRands plays the random tones! 
-	// ---------------------------------------
+    /**
+     * Plays random sine waves, called at the beginning of each test cycle.
+     */
 	public void playRands()
 	{
 		sineWave.play();
 	}
     
-	
-	//
-	//	CYCLES STRING
-	//
-	  public String getCyclesString()
-	  {
-		  return "  ---  Completed "+DynmVar.count+" of "+ DynmVar.cycles +" cycles.";
-	  }
+    /**
+     * Returns a string that indicates the total number of test cycles completed so far.
+     * This string is shown at the top of the Piano Window and updated after each test.
+     */
+	public String getCyclesString()
+	{
+	    return "  ---  Completed "+DynmVar.count+" of "+ DynmVar.cycles +" cycles.";
+	}
     
-	/****************************************************************************************
-	 *	END random methods
-	 *	BEGIN GUI METHODS
-	 ****************************************************************************************/
+
+    //	BEGIN GUI METHODS
     
-	// ---------------------------------------
-	// paint draws the piano graphics
-	// ---------------------------------------
+    /**
+     * Draws the Piano Window and sets whether the draggable bar should be shown
+     * and where it should it placed.
+     *
+     */
 	public void paint(Graphics g)
 	{
 		// - variable initialization 
@@ -375,27 +372,31 @@ public class PianoWindow  extends JFrame implements WindowListener
 			g.drawLine((int)DynmVar.dragBarX, 0 , (int)DynmVar.dragBarX, Constants.WINDOW_HEIGHT);
 		}
 		
-	}//END paint
+	}
 
+    /**
+     * Sets the visibility boolean of the draggable bar in the Piano Window
+     *
+     * @param dragBarVisible A boolean indicating whether or not to show the draggable bar
+     */
 	public void setDragBarVisible(boolean dragBarVisible)
 	{
 		this.dragBarVisible = dragBarVisible;
 	}
+    /**
+     * Returns the draggable bar visibility state
+     */
 	public boolean getDragBarVisible()
 	{
 		return this.dragBarVisible;
 	}
-	/****************************************************************************************
-	 *	END GUI methods
-	 *	BEGIN ignored things
-	 ****************************************************************************************/	
 	
 	//Ignore these events
-	public void windowClosed(WindowEvent e) {}		//Ignore these events
-	public void windowIconified(WindowEvent e) {}		//Ignore these events
-	public void windowDeiconified(WindowEvent e) {}		//Ignore these events
-	public void windowActivated(WindowEvent e) {}		//Ignore these events
-	public void windowDeactivated(WindowEvent e) {}		//Ignore these events
-	public void windowOpened(WindowEvent e) {}		//Ignore these events
+	public void windowClosed(WindowEvent e) {}		
+	public void windowIconified(WindowEvent e) {}	
+	public void windowDeiconified(WindowEvent e) {}	
+	public void windowActivated(WindowEvent e) {}	
+	public void windowDeactivated(WindowEvent e) {}	
+	public void windowOpened(WindowEvent e) {}		
 	
 }

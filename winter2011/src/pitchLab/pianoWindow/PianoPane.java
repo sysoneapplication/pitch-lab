@@ -12,28 +12,49 @@ import javax.swing.JPanel;
 import pitchLab.reference.Constants;
 import pitchLab.reference.DynmVar;
 
+/**
+ * Builds the Piano Window GUI interface from scratch.
+ *
+ * [TODO] Instead of building a piano from scratch, possible to load a
+ *        piano image and use it as a background - better UI and prettier.
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 7, 2009
+ *
+ */
 public class PianoPane extends JPanel
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
+    /**
+     * Sets the size of a piano pane
+     *
+     * @param preferredSize The size of the piano pane
+     */
 	public PianoPane(Dimension preferredSize)
 	{
 		PianoPane.this.setPreferredSize(preferredSize);
 		PianoPane.this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
+    /**
+     * Sets the width and height of the piano pane
+     *
+     * @param width The desired width of the piano pane in pixels
+     * @param height The desired height of the piano pane in pixels
+     */
 	public PianoPane(int width, int height)
 	{
 		PianoPane.this.setPreferredSize(new Dimension(width, height));
 		PianoPane.this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
+    /**
+     * Paints the black and white keys in the piano pane in the correct
+     * intervals to mimic a piano. 
+     * Also draws the gray ticks at the bottom of the piano window pane.
+     */
 	public void paintComponent(Graphics g)
 	{
-		// - variable initialization 
 		super.paintComponent(g);
 		
 		int[] keyIntW = {0,2,4,5,7,9,11,12}; //white key intervals
@@ -45,23 +66,21 @@ public class PianoPane extends JPanel
 			for (int i=0; i < 8; i++)
 			{
 				whiteKeyAt(keyIntW[i]*DynmVar.keyWidth, keyIntW[i], g, Constants.SCALE);
-			}//end for
+			}
 		}
 		else if (DynmVar.mode == Constants.PASSIVE_RELATIVE  || DynmVar.mode == Constants.PR_PRACTICE)
 		{
 			for (int i=0; i < 13; i++)
 			{
 				whiteKeyAt(i*DynmVar.keyWidth, i, g, Constants.RPSCALE);
-			}//end for
+			}
 		} 
 		
-		//Draws Black Keys
 		for(int i=0; i < 5; i++)
 		{
 			blackKeyAt( DynmVar.keyWidth*keyIntB[i], g );
-		}//end for				
+		}
 		
-		//Draws Ticks
 		g.setColor(Color.lightGray);
 		for (int i=0; i < Constants.DEF_NUM_TICKS; i++)
 		{
@@ -73,11 +92,16 @@ public class PianoPane extends JPanel
 		}
 
 		
-	}//END paint
+	}
 	
-	// ---------------------------------------
-	// whiteKeysAt - draws white keys
-	// ---------------------------------------
+    /**
+     * This is the method that draws a white key on the piano pane
+     *
+     * @param xPos The position of the white key to be generated
+     * @param numL The number of the white key being generated
+     * @param g Graphics need to make the key
+     * @param lables The label to put on key (possible misspelling in the variable)
+     */
 	public void whiteKeyAt(int xPos, int numL, Graphics g, String[] lables)
 	{
 		Graphics2D g2 = (Graphics2D)g;
@@ -96,11 +120,15 @@ public class PianoPane extends JPanel
 		else
 			g.drawString(lables[numL], xPos + DynmVar.keyWidth/2 - 10, Constants.blkKeyHeight);
 			
-	}//END whiteKeysAt	
+	}
 	
-	// ---------------------------------------
-	// blackKeysAt - draws black keys
-	// ---------------------------------------
+    /**
+     * This is the method that draws a black key on the piano pane.
+     * These keys do not get labeled.
+     *
+     * @param xPos The position of the black key to be generated
+     * @param g Graphics need to make the key
+     */
 	public void blackKeyAt(int xPos, Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D)g;
@@ -116,5 +144,5 @@ public class PianoPane extends JPanel
 		g2.setStroke(bs);
 		g2.drawPolyline(xLinePoints, yLinePoints, 4);
 		
-	}//END blackKeysAt	
+	}
 }

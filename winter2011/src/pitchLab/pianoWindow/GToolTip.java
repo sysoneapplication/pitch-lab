@@ -7,11 +7,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JWindow;
 
+/**
+ * Generates the tiny window that shows the current note the bar is on while dragging the bar
+ * across the piano window.
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 7, 2009
+ */
 public class GToolTip extends JWindow
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JLabel tooltip;
 	private int xFudge = 10;

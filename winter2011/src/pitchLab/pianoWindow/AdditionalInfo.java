@@ -1,16 +1,4 @@
 package pitchLab.pianoWindow;
-//
-//  CustomDialog.java
-//  (this is version 0.6)  
-//
-//	NOTES:	
-//		is this class essentially useless ?
-//		ie: should its implementations be  
-//		replaced with JOptionPane ?
-//
-//  Created by Gavin Shriver on 4/7/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
-
 
 import javax.swing.JDialog; 
 import java.awt.event.ActionListener;
@@ -38,18 +26,23 @@ import java.awt.event.ActionEvent;
 import java.awt.*;
 import java.text.ParseException;
 
+/**
+ * Generate the window that asks for the user additional info such as their name, birthday
+ * and gender.
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 7, 2009
+ *
+ * [XXX]
+ *	Is this class essentially useless?
+ *	IE: should its implementations be replaced with JOptionPane?
+ */
+
 public class AdditionalInfo extends JDialog implements ActionListener, WindowListener 
 {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	/****************************************************************************************
-	 *	BEGIN Defining Variables 
-	 ****************************************************************************************/	
-	
 	private JButton button = new JButton("OK");
 	
 	private EntryBox userName = new EntryBox(20, EntryBox.STRING, "Name: ");
@@ -66,11 +59,12 @@ public class AdditionalInfo extends JDialog implements ActionListener, WindowLis
 	
 	private JFrame masterFrame;
 	
-	/****************************************************************************************
-	 *	END Variables
-	 *	BEGIN Constructors
-	 ****************************************************************************************/
-	
+    /**
+     * This method does most of the formatting for the 'Subject Info' box.
+     * Sets the labels, format and positioning of all the input fields along
+     * with registering event listeners to the buttons.
+     *
+     */
 	public AdditionalInfo(JFrame frame, boolean modal) 
 	{
 		super(frame, modal);
@@ -125,11 +119,10 @@ public class AdditionalInfo extends JDialog implements ActionListener, WindowLis
 
     }
 	
-	/****************************************************************************************
-	 *	END Constructors
-	 *	BEGIN Action Events
-	 ****************************************************************************************/	
 
+    /**
+     * Populates the information automatically if available
+     */
     public void actionPerformed(ActionEvent e) 
 	{
 		if (button == e.getSource())
@@ -140,15 +133,12 @@ public class AdditionalInfo extends JDialog implements ActionListener, WindowLis
 		else
 			System.out.println("error occured");
 	}
-
-    
-
 	
-	/****************************************************************************************
-	 *	END Action Events
-	 *	BEGIN getter/setters
-	 ****************************************************************************************/	
-	
+
+
+    /**
+     * Populates the info in the 'Subject Info' pane automatically when called
+     */
 	private void populateInfo()
 	{
 		String tmp = " ";
@@ -169,19 +159,25 @@ public class AdditionalInfo extends JDialog implements ActionListener, WindowLis
 		this.additionalInfo = tmp;
 	}
     
+    /**
+     * Returns the user's name
+     */
     public String getName()
     {
     	return this.name;
     }
+    /**
+     * Returns the user's additional info.
+     */
     public String getAdditionalInfo()
     {
     	return this.additionalInfo;
     }
 	
-	/****************************************************************************************
-	 *	END getter/setters
-	 *	BEGIN main
-	 ****************************************************************************************/	
+
+    /**
+     * Initialze the additional info box
+     */
 	public static void main(String args[])
 	{
 		AdditionalInfo box = new AdditionalInfo(null, true);
@@ -193,6 +189,9 @@ public class AdditionalInfo extends JDialog implements ActionListener, WindowLis
 	}
 
 
+    /**
+     * Alert the user to confirm exiting/closing of the additional info box.
+     */
 	@Override
 	public void windowClosing(WindowEvent e)
 	{
@@ -206,15 +205,11 @@ public class AdditionalInfo extends JDialog implements ActionListener, WindowLis
 		
 	}
 
-	//
-	//	IGNORE THESE:
-	//
+    // Ignored events
 	public void windowActivated(WindowEvent e){}
 	public void windowClosed(WindowEvent e){}
 	public void windowDeactivated(WindowEvent e){}
 	public void windowDeiconified(WindowEvent e){}
 	public void windowIconified(WindowEvent e){}
 	public void windowOpened(WindowEvent e){}
-
-    
 }
