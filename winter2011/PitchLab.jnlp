@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<jnlp spec="1.0+" codebase="http://128.95.101.226" href="pitchLabLive.jnlp">
+
+   <information>
+      <title> PitchLabLive </title>
+	  
+      <vendor>Physics of Sound Acoustics Lab, University Of Washington</vendor>
+	  
+      <description>Pitch Lab</description>
+	  
+      <homepage href="http://128.95.101.226"/>
+	  
+      <description kind="short">Tests & collects data on Pitch Perception</description>
+	  
+      <offline-allowed/>
+	  
+   </information>
+   
+   <resources>
+   
+   	<j2se version="1.6+" />
+	   
+   	<jar href="PitchLab-V0.8.jar"/>   
+	
+   </resources>
+	
+   <security>
+	<all-permissions/>
+   </security>
+   
+   <application-desc main-class="pitchLab.MainWindow"/>
+</jnlp>
