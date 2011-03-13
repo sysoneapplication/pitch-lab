@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<jnlp spec="1.0+" codebase="http://pitch-lab.googlecode.com/svn/branches/gglcode500/winter2011" href="PitchLab.jnlp">
+<jnlp spec="1.0+" codebase="http://pitch-lab.googlecode.com/svn/trunk" href="PitchLab.jnlp">
 
    <information>
       <title>Pitch Lab</title>
