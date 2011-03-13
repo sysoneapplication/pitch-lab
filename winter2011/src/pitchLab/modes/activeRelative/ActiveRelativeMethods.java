@@ -6,6 +6,12 @@ import pitchLab.reference.Constants;
 import pitchLab.reference.DynmVar;
 import sound.Sine;
 
+/**
+ * This class defines the Active Pitch methods used in PitchLab's Active Pitch mode
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 20, 2009
+ */
 public class ActiveRelativeMethods
 {
 	
@@ -38,7 +44,7 @@ public class ActiveRelativeMethods
 	}
 	
 	/**
-	 * Caclulates and sets the two random frequencies that will be played for the Relative test.
+	 * Calculates and sets the two random frequencies that will be played for the Relative test.
 	 */
 	public static void ar_setIntervalToSet()
 	{

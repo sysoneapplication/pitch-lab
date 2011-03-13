@@ -10,22 +10,22 @@ import pitchLab.pianoWindow.PianoWindow;
 import pitchLab.reference.Calculations;
 import pitchLab.reference.DynmVar;
 
+/**
+ * This class defines the Passive Pitch mode used in PitchLab
+ * 
+ * [XXX] This class contains 95% of the same codes as ActivePitchControl,
+ *       maybe make a PitchControl Class then extend it accordingly for
+ *       the Active and Passive modes?
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 20, 2009
+ */
 public class ActiveRelativeControl extends pitchLab.pianoWindow.PianoWindowListener
 { 
 	
 	private PianoWindow pw;
 	private boolean firstTone = false;
 	private int state = 0;
-	/*
-	 * SWITCH STATEMENT state MODES
-	 * case 0:	haven't started yet
-	 * case 1: 	Working/Busy/Random Tones Playing
-	 * case 2:	single note playing, user needs to drag bar to location, enter confirms choice
-	 * case 3:	means user can drag the bar! (ie: pressed in the correct location)
-	 * case 4:  user hasn't heard first tone yet
-	 * case 5: 	user hasn't heard second tone yet
-	 * case 6:	user hasn't made bar appear yet
-	 */
 
     /**
      * Sets the configuration for PitchLab such that Active Relative mode is 

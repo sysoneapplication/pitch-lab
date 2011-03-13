@@ -23,9 +23,6 @@ import pitchLab.reference.DynmVar;
  */
 public class PassivePitchControl extends pitchLab.pianoWindow.PianoWindowListener
 {
-	/*
-	 * SWITCH STATEMENT state MODES
-	 */
 	private PianoWindow pw;
 	private PassivePitchMethods ppm;
 	private int state = 0;
