@@ -26,6 +26,7 @@
                 <attribute name="Main-Class" value="${main-class}"/>
             </manifest>
         </jar>
+        <signjar jar="${jar.dir}/${ant.project.name}.jar" keystore="${jar.dir}/${ant.project.name}.keystore" storepass="PitchLab" alias="PitchLab"/>
     </target>
 
     <target name="run" depends="jar">
