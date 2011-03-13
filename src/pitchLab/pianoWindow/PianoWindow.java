@@ -14,11 +14,9 @@ import javax.swing.JOptionPane;
 
 
 import pitchLab.instructWindow.InstructionWindow;
-import pitchLab.modes.activePitch.APCPractice;
 import pitchLab.modes.activePitch.ActivePitchControl;
 import pitchLab.modes.activeRelative.ARCPractice;
 import pitchLab.modes.activeRelative.ActiveRelativeControl;
-import pitchLab.modes.passivePitch.PPCPractice;
 import pitchLab.modes.passivePitch.PassivePitchControl;
 import pitchLab.modes.passiveRelative.PRCPractice;
 import pitchLab.modes.passiveRelative.PassiveRelativeControl;
@@ -53,6 +51,12 @@ import java.awt.event.WindowEvent;
 
 public class PianoWindow  extends JFrame implements WindowListener
 {
+
+	public static boolean isMouseWithinDragBarMargin(int mouseX)
+	{
+		return DynmVar.dragBarX - Constants.DRAG_BAR_MARGIN <= mouseX && mouseX <= DynmVar.dragBarX + Constants.DRAG_BAR_MARGIN;
+	}
+	
 	/**
 	 * 
 	 */
@@ -75,19 +79,8 @@ public class PianoWindow  extends JFrame implements WindowListener
 	private Sine sineWave = new Sine();
 	public SineContinuous contSine = new SineContinuous();
 	
-	// --- controler listeners:
-	private PassivePitchControl ppc;
-	private ActivePitchControl apc;
-	private PassiveRelativeControl prc;
-	private ActiveRelativeControl arc;
-	
-	private PPCPractice ppcP;
-	private APCPractice apcP;
-	private PRCPractice prcP;
-	private ARCPractice arcP;
-	
+	private PianoWindowListener listener;	
 	public InstructionWindow instruct;
-	private PianoPane bg;
 	public GToolTip toolTip;
 
 	/****************************************************************************************
@@ -122,8 +115,6 @@ public class PianoWindow  extends JFrame implements WindowListener
 		if (mode > 10)
 			DynmVar.syncResults = false;
 		
-		bg = new PianoPane(DynmVar.window_Width,Constants.WINDOW_HEIGHT);
-		
 		initializeVariables(); 
 		initializeWindow();
 		initializeListeners();
@@ -133,7 +124,7 @@ public class PianoWindow  extends JFrame implements WindowListener
 		this.getContentPane();
 		
 		this.setResizable(false);
-		
+	
 		this.setVisible(true);
 
 		
@@ -144,6 +135,9 @@ public class PianoWindow  extends JFrame implements WindowListener
 			instruct.setVisible(true);
 		}
 		
+		this.toFront();
+		this.requestFocus();
+
 		//repaint();
 		
 	}	
@@ -191,97 +185,60 @@ public class PianoWindow  extends JFrame implements WindowListener
 		{
 			case Constants.PASSIVE_PITCH:
 				//initialize controller:
-				ppc = new PassivePitchControl(this);
-				//add controler's mouse listening methods:
-				this.addMouseListener(ppc);
-				this.addMouseMotionListener(ppc);
-				//add controler's keyboard listening methods:
-				this.addKeyListener(ppc);
-				this.add(bg);
+				listener = new PassivePitchControl(this, false);
+				this.add(new PianoPane(DynmVar.window_Width,Constants.WINDOW_HEIGHT));
 				this.pack();
 				break;
 				
 			case Constants.ACTIVE_PITCH:
 				//initialize controller:
-				apc = new ActivePitchControl(this);
-				//add controler's mouse listening methods:
-				this.addMouseListener(apc);
-				this.addMouseMotionListener(apc);
-				//add controler's keyboard listening methods:
-				this.addKeyListener(apc);
+				listener = new ActivePitchControl(this, false);
 				this.setSize(DynmVar.window_Width,Constants.WINDOW_HEIGHT);
 				break;
 				
 			case Constants.PASSIVE_RELATIVE:
 				//initialize controller:
-				prc = new PassiveRelativeControl(this);
-				//add controler's mouse listening methods:
-				this.addMouseListener(prc);
-				this.addMouseMotionListener(prc);
-				//add controler's keyboard listening methods:
-				this.addKeyListener(prc);
-				this.add(new PianoPane(DynmVar.window_Width,Constants.WINDOW_HEIGHT));
+				listener = new PassiveRelativeControl(this);
+				this.add(new IntervalPane(DynmVar.window_Width,Constants.WINDOW_HEIGHT));
 				this.pack();
 				break;
 				
 			case Constants.ACTIVE_RELATIVE:
 				//initialize controller:
-				arc = new ActiveRelativeControl(this);
-				//add controler's mouse listening methods:
-				this.addMouseListener(arc);
-				this.addMouseMotionListener(arc);
-				//add controler's keyboard listening methods:
-				this.addKeyListener(arc);
+				listener = new ActiveRelativeControl(this);
 				this.setSize(DynmVar.window_Width,Constants.WINDOW_HEIGHT);
 				
 				break;
 				
 			case Constants.PP_PRACTICE:
 				//initialize controller:
-				ppcP = new PPCPractice(this);
-				//add controler's mouse listening methods:
-				this.addMouseListener(ppcP);
-				this.addMouseMotionListener(ppcP);
-				//add controler's keyboard listening methods:
-				this.addKeyListener(ppcP);
-				this.add(bg);
+				listener = new PassivePitchControl(this, true);
+				this.add(new PianoPane(DynmVar.window_Width,Constants.WINDOW_HEIGHT));
 				this.pack();
 				break;
 				
 			case Constants.AP_PRACTICE:
 				//initialize controller:
-				apcP = new APCPractice(this);
-				//add controler's mouse listening methods:
-				this.addMouseListener(apcP);
-				this.addMouseMotionListener(apcP);
-				//add controler's keyboard listening methods:
-				this.addKeyListener(apcP);
+				listener = new ActivePitchControl(this, true);
 				this.setSize(DynmVar.window_Width,Constants.WINDOW_HEIGHT);
 				break;
 				
 			case Constants.PR_PRACTICE:
 				//initialize controller:
-				prcP = new PRCPractice(this);
-				//add controler's mouse listening methods:
-				this.addMouseListener(prcP);
-				this.addMouseMotionListener(prcP);
-				//add controler's keyboard listening methods:
-				this.addKeyListener(prcP);
+				listener = new PRCPractice(this);
 				this.add(new PianoPane(DynmVar.window_Width,Constants.WINDOW_HEIGHT));
 				this.pack();
 				break;
 				
 			case Constants.AR_PRACTICE:
 				//initialize controller:
-				arcP = new ARCPractice(this);
-				//add controler's mouse listening methods:
-				this.addMouseListener(arcP);
-				this.addMouseMotionListener(arcP);
-				//add controler's keyboard listening methods:
-				this.addKeyListener(arcP);
+				listener = new ARCPractice(this);
 				this.setSize(DynmVar.window_Width,Constants.WINDOW_HEIGHT);
 				break;
 		}
+		this.addMouseListener(listener);
+		this.addMouseMotionListener(listener);
+		this.addKeyListener(listener);
         
 	}
 	

@@ -55,16 +55,14 @@ public class ActivePitchMethods
 	//
 	//	Blend note methods
 	//
-	public void blendNotes_ap(int xPos)
-	{
-		pw.contSine.setFrequency(Calculations.frequencyFromX(xPos));
-	}
-	
-	public void blendNotes_app(int xPos)
+	public void blendNotes_ap(int xPos, boolean practice)
 	{
 		double freqToPlay = Calculations.frequencyFromX((xPos));
-		pw.toolTip.setTip(Calculations.freqToProperNote(freqToPlay));
-		pw.instruct.setCurrAnsSelected(pw.toolTip.getTip());
+		if (practice)
+		{
+			pw.toolTip.setTip(Calculations.freqToProperNote(freqToPlay));
+			pw.instruct.setCurrAnsSelected(pw.toolTip.getTip());
+		}
 		pw.contSine.setFrequency(freqToPlay);
 	}
 	

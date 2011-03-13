@@ -80,6 +80,7 @@ public class DynmVar
 	
     public static int dragBarX  = 150;  // starting x cord of 'drag-able' bar changed by mouse listeners
 	public static int dragFromX = 0; 
+	public static int dragBarGrabOffset = 0;
 	
 	// ---	active mode param
 	public static String noteToSet;

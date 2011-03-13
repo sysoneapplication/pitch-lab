@@ -26,13 +26,11 @@ public class PassivePitchMethods
 		pw.contSine.play(DynmVar.getFirstFreq());
 		DynmVar.cycleStartTime = System.currentTimeMillis();
 	}
-	public String pp_practicePlay()
+
+	public String pp_play(boolean practice)
 	{
-		pw.contSine.play(DynmVar.getFirstFreq());
-		return Calculations.freqToCents(DynmVar.getFirstFreq());
+		double f = DynmVar.getFirstFreq();
+		pw.contSine.play(f);
+		return practice ? Calculations.freqToCents(DynmVar.getFirstFreq()) : "";
 	}
-	public void pp_play()
-	{
-		pw.contSine.play(DynmVar.getFirstFreq());
-	}
-}
+} 

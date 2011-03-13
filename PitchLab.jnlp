@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<jnlp spec="1.0+" codebase="http://pitch-lab.googlecode.com/svn/trunk" href="PitchLab.jnlp">
+
+   <information>
+      <title>Pitch Lab</title>
+	  
+      <vendor>Physics of Sound Acoustics Lab, University Of Washington</vendor>
+	  
+      <description>Pitch Lab</description>
+	  
+      <homepage href="http://code.google.com/p/pitch-lab/wiki/Home"/>
+	  
+      <description kind="short">Tests &amp; collects data on Pitch Perception</description>
+	  
+      <offline-allowed/>
+	  
+   </information>
+   
+   <resources>
+   
+   	<j2se version="1.6+" />
+	   
+   	<jar href="PitchLab.jar"/>   
+	
+   </resources>
+	
+   <security>
+	<all-permissions/>
+   </security>
+   
+   <application-desc main-class="pitchLab.mainWindow.MainWindow"/>
+</jnlp>

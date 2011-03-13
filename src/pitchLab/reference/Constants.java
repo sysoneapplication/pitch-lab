@@ -43,8 +43,6 @@ public class Constants
 	public static final int whtKeyHeight = WINDOW_HEIGHT - KEY_START_HEIGHT;
 	public static final int BLACK_KEY_START_HEIGHT = 160;	// black keys set higher
 	public static final int blkKeyHeight = WINDOW_HEIGHT - BLACK_KEY_START_HEIGHT;
-	
-	
-
+	public static final int DRAG_BAR_MARGIN = 12;
 
 }

@@ -12,7 +12,7 @@ import pitchLab.pianoWindow.PianoWindow;
 import pitchLab.reference.Calculations;
 import pitchLab.reference.DynmVar;
 
-public class ARCPractice implements MouseListener, MouseMotionListener, KeyListener
+public class ARCPractice extends pitchLab.pianoWindow.PianoWindowListener
 { 
 	PianoWindow pw;
 	private boolean firstTone = false;

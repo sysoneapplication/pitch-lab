@@ -10,7 +10,7 @@ import pitchLab.pianoWindow.PianoWindow;
 import pitchLab.reference.Calculations;
 import pitchLab.reference.DynmVar;
 
-public class ActiveRelativeControl implements MouseListener, MouseMotionListener, KeyListener
+public class ActiveRelativeControl extends pitchLab.pianoWindow.PianoWindowListener
 { 
 	
 	private PianoWindow pw;
@@ -43,7 +43,7 @@ public class ActiveRelativeControl implements MouseListener, MouseMotionListener
         	state = 2;
         }
         
-        if (DynmVar.dragBarX-1 <= x && x <= DynmVar.dragBarX+1 && state == 2 )
+        if (DynmVar.dragBarX-10 <= x && x <= DynmVar.dragBarX+10 && state == 2 )
 		{
             state = 3;
 			DynmVar.dragFromX = x - DynmVar.dragBarX;  // how far from left   

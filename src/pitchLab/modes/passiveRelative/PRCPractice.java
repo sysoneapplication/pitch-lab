@@ -12,7 +12,7 @@ import pitchLab.pianoWindow.PianoWindow;
 import pitchLab.reference.Calculations;
 import pitchLab.reference.DynmVar;
 
-public class PRCPractice implements MouseListener, MouseMotionListener, KeyListener
+public class PRCPractice extends pitchLab.pianoWindow.PianoWindowListener
 { 
 	private PianoWindow pw;
 	private int state = 0;

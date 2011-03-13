@@ -11,7 +11,7 @@ import pitchLab.pianoWindow.PianoWindow;
 import pitchLab.reference.Calculations;
 import pitchLab.reference.DynmVar;
 
-public 	class PassiveRelativeControl implements MouseListener, MouseMotionListener, KeyListener
+public 	class PassiveRelativeControl extends pitchLab.pianoWindow.PianoWindowListener
 { 
 	private PianoWindow pw;
 	private int state = 0;

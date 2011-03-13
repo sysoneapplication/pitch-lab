@@ -23,7 +23,7 @@ public class Calculations
 		
 		int centsError = ((int)(x*DynmVar.centScaling) - 100*(noteIndex)-Constants.CENTS_PADDING_AT_ENDS);
 		
-		if (DynmVar.mode == Constants.PASSIVE_PITCH || DynmVar.mode == Constants.PP_PRACTICE)
+		if (DynmVar.mode == Constants.PASSIVE_PITCH || DynmVar.mode == Constants.PP_PRACTICE || DynmVar.mode == Constants.AP_PRACTICE)
 			return Constants.SCALE[noteIndex]+" " + centsError + " cents";
 		else if (DynmVar.mode == Constants.PASSIVE_RELATIVE|| DynmVar.mode == Constants.PR_PRACTICE)
 			return Constants.RPSCALE[noteIndex] + " " + centsError + " cents";
