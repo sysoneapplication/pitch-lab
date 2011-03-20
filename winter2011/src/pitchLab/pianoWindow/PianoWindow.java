@@ -1,5 +1,8 @@
 package pitchLab.pianoWindow;
 
+import java.io.*;
+import java.util.*;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -17,9 +20,11 @@ import pitchLab.reference.DynmVar;
 
 import common.FileUtilClient;
 
-import sound.Sine;
-import sound.SineContinuous;
+import sound.*;
+//import sound.Sine;
+//import sound.SineContinuous;
 
+import jm.util.*;
 
 import java.awt.Graphics;
 import java.awt.Color;
@@ -69,6 +74,9 @@ public class PianoWindow  extends JFrame implements WindowListener
 	
 	private Sine sineWave = new Sine();
 	public SineContinuous contSine = new SineContinuous();
+
+	public Instruments instrumentName = new Instruments();
+
 	
 	private PianoWindowListener listener;	
 	public InstructionWindow instruct;
@@ -79,7 +87,7 @@ public class PianoWindow  extends JFrame implements WindowListener
      * Open the Piano Window and set its visibility to true
      */
 	public static void main (String args[])
-	{
+	{	
 		DynmVar.syncResults = false;
 		PianoWindow drawing = new PianoWindow(Constants.AR_PRACTICE, 14);
 		drawing.setVisible(true);
@@ -95,10 +103,12 @@ public class PianoWindow  extends JFrame implements WindowListener
      */
 	public PianoWindow(int mode, int cycles)
 	{
-			
+		System.out.println("Open Piano Window");
+
 		DynmVar.mode = mode;
 		DynmVar.cycles = cycles;
 		
+	    
 		if (mode > 10)
 			DynmVar.syncResults = false;
 		
@@ -131,6 +141,27 @@ public class PianoWindow  extends JFrame implements WindowListener
 
     //	BEGIN constructor helpers
 	
+    /**
+     * Lazyloads an instrument based on a String which is taken from 
+     * the 'Drop Down' menu in the main PitchLab window.
+     */
+    public void lazyLoadInstrument(boolean random) 
+    {
+		try{
+			Object CurrentInstrument = Class.forName("sound." + DynmVar.instrument).newInstance();
+//			Object CurrentInstrument = Class.forName("sound.Sine").newInstance();
+            System.out.println(DynmVar.instrument + " Instrument Loaded");
+            
+		} catch ( ClassNotFoundException ex ){
+			System.err.println(ex + " Instrument Not Found");
+		} catch( InstantiationException ex ){
+		      System.err.println( ex + " Interpreter class must be concrete.");
+	    }
+	    catch( IllegalAccessException ex ){
+	      System.err.println( ex + " Interpreter class must have a no-arg constructor.");
+	    }
+    }
+
     /**
      * Checks if the user has requested his or her results to be submitted
      * and if so sets up the data to do so.
@@ -296,7 +327,7 @@ public class PianoWindow  extends JFrame implements WindowListener
 		int exitAnswer = JOptionPane.showConfirmDialog(null, 
 				" Are you sure you want to Exit? ", "Exit?", 
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
+		Play.stopMidi();
 		if (exitAnswer == JOptionPane.YES_OPTION)
 			exit();
 	}

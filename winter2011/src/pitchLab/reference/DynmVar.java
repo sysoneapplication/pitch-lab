@@ -42,6 +42,7 @@ public class DynmVar
 	
 	//	GENERAL TEST SETTINGS: mode, sync, setCents
 	public static int mode = 0;
+	public static String instrument = "Sine";
 	public static boolean syncResults = true;
 	public static boolean userSetCents = true;
 	public static boolean upAndDown_RS = true;

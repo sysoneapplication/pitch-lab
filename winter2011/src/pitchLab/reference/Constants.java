@@ -33,6 +33,11 @@ public class Constants
 											"octave + 3M","octave + p4","octave + a4/d5","octave + p5",
 											"octave + 6m","octave + 6M"};
 	
+    public static final String[] AVAILABLE_INSTRUMENTS = {
+        "Sine", "Piano", "Harpsicord", "Organ", "Oboe", "Flute", "Clarinet", "Guitar", "Strings"
+    };
+
+	
 	//	PianoWindow Constants
 	public static final int LONG_WINDOW_WIDTH = 1300; 
 	public static final int SHORT_WINDOW_WIDTH = 650;

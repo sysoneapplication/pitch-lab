@@ -1,9 +1,13 @@
 package pitchLab.modes.passivePitch;
 
 import pitchLab.pianoWindow.PianoWindow;
+
+
 import pitchLab.reference.Calculations;
 import pitchLab.reference.DynmVar;
 import sound.Sine;
+
+import sound.*;
 
 /**
  * This class defines the Active Pitch methods used in PitchLab's Active Pitch mode
@@ -15,6 +19,7 @@ public class PassivePitchMethods
 {
 
 	private PianoWindow pw;
+	private Instruments piano = new Instruments();
 	
     /**
      * Sets the classes piano window attribute for Active Pitch mode, 
@@ -48,7 +53,12 @@ public class PassivePitchMethods
 	public String pp_play(boolean practice)
 	{
 		double f = DynmVar.getFirstFreq();
-		pw.contSine.play(f);
+		if(DynmVar.instrument == "Sine") {
+			System.out.println("Using default Sine wave");
+			pw.contSine.play(f);
+		} else {
+			piano.playRandomSequence(f);
+		}
 		return practice ? Calculations.freqToCents(DynmVar.getFirstFreq()) : "";
 	}
 } 

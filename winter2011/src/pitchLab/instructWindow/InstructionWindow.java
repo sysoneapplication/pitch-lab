@@ -2,6 +2,7 @@ package pitchLab.instructWindow;
 
 
 import java.awt.BorderLayout;
+
 import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Component;
@@ -32,6 +33,9 @@ import pitchLab.reference.DynmVar;
 
 import java.awt.event.ActionEvent;
 import java.util.Scanner;
+
+import jm.util.*;
+
 
 /**
  * Generates the Instruction Window that loads when Practice Mode is enabled
@@ -379,6 +383,7 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
 		if(endPractice == e.getSource()) 
 		{
 			System.out.println("User ended practice session.");
+			Play.stopMidi();
 			((PianoWindow) this.getOwner()).exiting();
 		}
 		else

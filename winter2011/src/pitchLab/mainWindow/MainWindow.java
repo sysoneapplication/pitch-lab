@@ -26,6 +26,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.JComboBox;
 
 import common.EntryBox;
 import common.GUIMethods;
@@ -121,6 +122,8 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 	private JRadioButton passive_relative = new JRadioButton("Passive Relative Pitch");
 	private ButtonGroup modeGroup = new ButtonGroup();
 	
+    private JComboBox dropdown = new JComboBox(Constants.AVAILABLE_INSTRUMENTS);
+    
 	private static Checkbox practiceMode = new Checkbox("Practice Mode", false);
 	private static Checkbox userSetsCents = new Checkbox("Use Notes +/- Cents ?", false);
 	private Checkbox upAndDown_RS = new Checkbox("Identify increasing AND decreasing intervals ?", DynmVar.upAndDown_RS);
@@ -224,8 +227,7 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
     	modeGroup.add(passive_pitch);
     	modeGroup.add(active_relative);
     	modeGroup.add(passive_relative);
-    	
-    	
+    	    	
     	syncResultsGroup.add(syncResults);
     	syncResultsGroup.add(noSyncResults);
     	JLabel aboutSync = new JLabel("       (view Privacy Policy)");
@@ -250,8 +252,7 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
     	buttPan.add(startButton);
     	buttPan.add(exitButton);*/
     	panel.add(GUIMethods.flowMaker(startButton, exitButton) ,BorderLayout.SOUTH);
-    	
-    	
+  
     	JPanel buttPan2 = new JPanel(new GridLayout(0,1));
     	buttPan2.add(new JLabel(""));
     	buttPan2.add(new JLabel("<html><b>Select Test Type:</b></html>"));
@@ -260,6 +261,9 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
     	buttPan2.add(passive_relative);
     	buttPan2.add(active_relative);
     	buttPan2.add(new JLabel(""));
+    	buttPan2.add(new JLabel("<html><b>Select Instrument Type:</b></html>")); 
+    	buttPan2.add(dropdown);
+     	buttPan2.add(new JLabel(""));
     	buttPan2.add(new JLabel("<html> <b>Test Options:</b></html>"));
     	buttPan2.add(practiceMode);
     	buttPan2.add(userSetsCents);
@@ -310,6 +314,7 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 		applyButton.addActionListener(this);
 		resetButton.addActionListener(this);
 		defaultsButton.addActionListener(this);
+		dropdown.addActionListener(this);
 		
 		// adds buttons to button panel
 		buttonPanel.add(applyButton);
@@ -533,6 +538,7 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 		Sine.setDefaults();
 		SineContinuous.setDefaults();
 		DynmVar.setDefaults();
+		dropdown.setEnabled(true);
 		
 		resetSettings();
 	}
@@ -637,6 +643,7 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
      */
 	private void starter()
 	{
+        System.out.println("Starting PitchLab Test");
 		DynmVar.upAndDown_RS = (upAndDown_RS.getState());
 		DynmVar.userSetCents = (userSetsCents.getState());
 		
@@ -668,6 +675,13 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 		{
 			finiteToneTime.setEnabled(false);
 			finiteRestTime.setEnabled(false);
+		}
+
+		if(modeGroup.getSelection() == passive_pitch.getModel()) {
+			dropdown.setEnabled(true);
+		} else {
+			dropdown.setEnabled(false);
+			DynmVar.instrument = "Sine";
 		}
 			
 		 if (modeGroup.getSelection() == active_relative.getModel() || modeGroup.getSelection() == active_pitch.getModel())
@@ -743,7 +757,11 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 	public void actionPerformed(ActionEvent e) 
 	{		
 		
-		if (applyButton == e.getSource())
+        if(dropdown == e.getSource())
+        {
+            DynmVar.instrument = (String)dropdown.getSelectedItem();
+        } 
+        else if (applyButton == e.getSource())
 		{
 			setSettings();
 		}

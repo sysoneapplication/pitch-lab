@@ -191,9 +191,11 @@ public class PassivePitchControl extends pitchLab.pianoWindow.PianoWindowListene
 	{
 		if(e.getKeyCode() == KeyEvent.VK_ENTER)
 		{
+            System.out.println("Starting Passive Pitch");
 			switch(state)
 			{
 				case 0:
+			       // pw.lazyLoadInstrument();
 					state = 1; 
 					if (this.practiceMode)
 						pw.instruct.setInstructionPlace(3,true);
@@ -253,7 +255,10 @@ public class PassivePitchControl extends pitchLab.pianoWindow.PianoWindowListene
      */
 	private void cycleAndPlay()
 	{
-		pw.playRands();	//play random cycle
+        System.out.println("Randoms");
+        if(DynmVar.instrument == "Sine") {
+    		pw.playRands();	//play random (default) sine cycle
+        }
 		if (this.practiceMode)
 		{
 			pw.instruct.setInstructionPlace(1,true);
