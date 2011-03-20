@@ -144,12 +144,19 @@ public class PianoWindow  extends JFrame implements WindowListener
     /**
      * Lazyloads an instrument based on a String which is taken from 
      * the 'Drop Down' menu in the main PitchLab window.
+     * 
+     * This was used when developing a method to load different instruments 
+     * based on the Main Window drop-down selection. 
+     * 
+     * @param random Determines whether to load a random series of notes or just a single note
+     * 			of the instrument.
+     * 
+     * @deprecated
      */
     public void lazyLoadInstrument(boolean random) 
     {
 		try{
 			Object CurrentInstrument = Class.forName("sound." + DynmVar.instrument).newInstance();
-//			Object CurrentInstrument = Class.forName("sound.Sine").newInstance();
             System.out.println(DynmVar.instrument + " Instrument Loaded");
             
 		} catch ( ClassNotFoundException ex ){
