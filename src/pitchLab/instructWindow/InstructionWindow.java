@@ -2,6 +2,7 @@ package pitchLab.instructWindow;
 
 
 import java.awt.BorderLayout;
+
 import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Component;
@@ -33,11 +34,17 @@ import pitchLab.reference.DynmVar;
 import java.awt.event.ActionEvent;
 import java.util.Scanner;
 
+import jm.util.*;
+
+
+/**
+ * Generates the Instruction Window that loads when Practice Mode is enabled
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 20, 2009
+ */
 public class InstructionWindow extends JDialog implements ActionListener, ItemListener 
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	//private PianoWindow pianoWindow;
 	private JPanel mainPan = null;
@@ -64,7 +71,10 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
 
     
 
-   // public InstructionWindow(JFrame frame, boolean modal, int mode) 
+
+   /**
+    * Sets up the Instruction window
+    */
     public InstructionWindow() 
 	{
     	super();
@@ -73,12 +83,23 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
 		
     }
        
+   /**
+    * Sets up the Instruction window with the Piano
+    */
     public InstructionWindow(PianoWindow frame) 
 	{
     	super(frame);
 		setupWindow();
     }
  
+    /**
+     * Called by InstructionWindow to build the GUI interface for the
+     * Instruction Window that loads in Practic Mode.
+     *
+     * The window is JPanel and all of its characteristics are constructed 
+     * here. The Panel looked different based on whether the practice mode 
+     * is in Passive Pitch, Active Pitch, Passive Relative or Active Relative.
+     */
     private void setupWindow()
     {
 
@@ -187,9 +208,10 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
 		//this.setVisible(true);
     }
     
-    //************************************
-    //
-    //************************************
+    /**
+     * The instructions in the Instruction Window are set differently based on
+     * the mode PitchLab is in: Passive/Active Pitch or Passive/Active Relative.
+     */
     private void redrawInstructions()
     {
     	switch (DynmVar.mode)
@@ -217,9 +239,21 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
 		}
     }
     
-    //************************************
-    //
-    //************************************
+    /**
+     * The instructions in the Instruction Window are set differently based on
+     * the mode PitchLab is in: Passive/Active Pitch or Passive/Active Relative.
+     * This method builds the intial text instructions into the instruction window 
+     * panel by looping through each part of the panel and inserting the desired text
+     * with its desired font-style.
+     *
+     * @param instructionSet The main instruction string
+     *
+     * @param instructionSetBolds The instructions that are desired to be in bold font
+     *
+     * @param instructionSetItalics The instructions that are desired to be italicized.
+     *
+     * @param canSetAnswerPlace The area of the panel where a user can set answer.
+     */
     private void drawInstructions(String[] instructionSet, int[] instructionSetBolds, int[] instructionSetItalics, int canSetAnswerPlace)
     {
     	int italicIndex = 0;
@@ -258,6 +292,13 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
     	}
     }
     
+    /**
+     * Returns the Instruction Window panel after building it with a grid layout.
+     *
+     * @param bagHeader The titled border of the Information Window
+     *
+     * @param center If true the window will adjust its dimensions to fit in the center.
+     */
     private JComponent makeBag(JComponent[] compons,String bagHeader, boolean center)  
 	{
     	JPanel panel = new JPanel();
@@ -292,6 +333,9 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
         return panel;
     }
     
+    /**
+     * Returns JPanel
+     */
     private JComponent componentMaker(Component comp)
     {
     	JPanel panel = new JPanel();
@@ -299,6 +343,11 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
     	return panel;
     }
     
+    /**
+     * Set the styles used for bold, italic font-styles in the information window.
+     *
+     * @param doc The document the styles are attached to
+     */
     protected void addStylesToDocument(StyledDocument doc) 
     {
         //Initialize some styles.
@@ -316,15 +365,25 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
 
     
     }
-	/****************************************************************************************
-	 *	END GUI setup 
-	 *	BEGIN action methods
-	 ****************************************************************************************/	
+	 //****************************************************************************************
+	 //*	END GUI setup 
+	 //*	BEGIN action methods
+	 //****************************************************************************************/	
+
+    
+    /**
+     * Closes the Piano Window and Information Window when the user ends the practice 
+     * mode.  Prints out informatino into the termianl on a successful closing.
+     *
+     * @param e The event that indicates 'endPractice' to close the windows. If the event 
+     *          is not endPractice then an error has occured.
+     */
     public void actionPerformed(ActionEvent e) 
 	{
 		if(endPractice == e.getSource()) 
 		{
 			System.out.println("User ended practice session.");
+			Play.stopMidi();
 			((PianoWindow) this.getOwner()).exiting();
 		}
 		else
@@ -332,7 +391,15 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
 
     }
     
-	
+    /**
+     * Updates the Information Window fields (I believe the 'Show Current Selection'
+     * in the Information Window is the event that triggers this action).
+     *
+     * The 'Fields' are the the two fields at the bottom of the Information Window that 
+     * indicate the 'Value to set' and 'Current Selection'
+     *
+     * @param e The event that indicates whether to error out or update the window fields.
+     */
 	public void itemStateChanged(ItemEvent e)
 	{
 		if(showCurrentSel == e.getSource())
@@ -381,6 +448,13 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
     	this.pack();
     }*/
     
+    /**
+     * Move onto the next round after a user has selected a pitch
+     *
+     * @param ansJustSelected The pitch the user chose in the previous round
+     *
+     * @param place The instruction text that will be set.
+     */
     public void nextRound(String ansJustSelected, int place)
     {
     	setPrevAnsSelected(ansJustSelected);  	
@@ -399,16 +473,27 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
     	
     }*/
     
+    /**
+     * Updates the Round, the Answer, and the Selected answer
+     */
     public void updateFields()
     {
     	updateRounds();
     	updateAnsToSet();
     	updateAnsSelected();
     }
+
+    /**
+     * Sets the text of the number of rounds completed.
+     */
     public void updateRounds()
     {
     	roundsCompleted.setText(IWConsts.NUM_COMPLETED + Integer.toString(numCompleted));
     }
+    /**
+     * If a previous answer exists set the answer text to that answer, otherwise choose
+     * the current answer.
+     */
     public void updateAnsToSet()
     {
     	if(!showCurrentSel.getState())
@@ -416,6 +501,10 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
     	else
     		ansToSet.setText(IWConsts.DISP_CUR_TO_SET + getCurrAnsToSet());
     }
+    /**
+     * If a previous selected answer exists set the selection text to that selection, 
+     * otherwise choose the current user selection.
+     */
     public void updateAnsSelected()
     {
     	if(!showCurrentSel.getState())
@@ -431,9 +520,10 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
 	 ****************************************************************************************/	
     
     /**
-     * 
-     * @param canSetAnswer
-     * @param redraw
+     * Sets the Infomation Window canSetAnswer 
+     *
+     * @param canSetAnswer 
+     * @param redraw If true the instructions get redrawn
      */
     public void setCanSetAnswer(boolean canSetAnswer, boolean redraw)
     {
@@ -442,19 +532,26 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
     	if(redraw)
     		redrawInstructions();
     }
+    /**
+     * Returns the Information Window's current canSetAnswer boolean
+     */
     public boolean getCanSetAnswer()
     {
     	return this.canSetAnswer;
     }
+    /**
+     * Keeps track of the number of rounds completed by the user
+     */
     public void incrementNumRounds()
     {
     	numCompleted++;
     	//updateRounds();
     }
     /**
-     * 
+     * Determines where the instructions will be placed.
+     *
      * @param instructionPlace
-     * @param redraw
+     * @param redraw If true, the instructions will be redrawn
      */
 	public void setInstructionPlace(int instructionPlace, boolean redraw) 
 	{
@@ -464,22 +561,37 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
 		
 	}
 
+    /**
+     * Returns Instruction Place
+     */
 	public int getInstructionPlace() 
 	{
 		return this.instructionPlace;
 	}
 
+    /**
+     * Sets currently selected answer and updates the updates the GUI to represent
+     * the value.
+     *
+     * @param currAnsSelected The current pitch being selected
+     */
 	public void setCurrAnsSelected(String currAnsSelected)
 	{
 		this.currAnsSelected = currAnsSelected;
 		updateAnsSelected();
 	}
 
+    /**
+     * Returns the currently selected answer
+     */
 	public String getCurrAnsSelected()
 	{
 		return currAnsSelected;
 	}
 
+    /**
+     * Sets the previously selected answer to the currently selected answer
+     */
 	public void setCurrAnsToSet(String currAnsToSet)
 	{
 		setPrevAnsToSet(this.currAnsToSet);
@@ -487,42 +599,78 @@ public class InstructionWindow extends JDialog implements ActionListener, ItemLi
 		updateAnsToSet();
 	}
 
+    /**
+     * Returns what the current answer to set is
+     */
 	public String getCurrAnsToSet()
 	{
 		return currAnsToSet;
 		
 	}
+    /**
+     * Sets the previous answer that was set
+     */
 	public void setPrevAnsToSet(String prevAnsToSet)
 	{
 		this.prevAnsToSet = prevAnsToSet;
 	}
-
+    
+    /**
+     * Returns the previous answer to set
+     */
 	public String getPrevAnsToSet()
 	{
 		return prevAnsToSet;
 	}
 
+    /**
+     * Sets the previous answer that was selected
+     *
+     * @param prevAnsSelected The previous answer that was selected by the user
+     */
 	public void setPrevAnsSelected(String prevAnsSelected)
 	{
 		this.prevAnsSelected = prevAnsSelected;
 	}
 
+    /**
+     * Returns the previously selected answer
+     */
 	public String getPrevAnsSelected()
 	{
 		return prevAnsSelected;
 	}
 	
+    /**
+     * Returns the boolean that is dictated by the checkbox in the Information Window.
+     * The checkbox when checked shows the user's currently selected pitch, and when
+     * unchecked hides the value of the user's currently selected pitch.
+     */
 	public boolean getShowCurrSelection()
 	{
 		return showCurrentSel.getState();
 	}
 	
-	/****************************************************************************************
-	 *	END get/set methods
-	 *	BEGIN MAIN
-	 ****************************************************************************************/	
+	 //
+	 //	END get/set methods
+	 //	BEGIN MAIN
+	 //
 		
 	
+    /**
+     * Generates the Instruction Windows that are present when a user uses PitchLab
+     * in Practice Mode. 
+     * The Instruction Window has text which is set based on what mode the user has 
+     * chosen: Passive Pitch, Active Pitch, Passive Relative or Active Relative.
+     * The window text is styled appropriately with bold and italic fonts based on 
+     * which section the the text is in and at what point. 
+     * The instructions become bold based on where the user is in the PitchLab test.
+     * 
+     *
+     * There is also a boolean input checkbox that governs whether to show the user's
+     * currently selected pitch or to hide it.  When unchecked the currently selected
+     * pitch value is hidden and simulates PitchLab when not in practice mode.
+     */
 	public static void main(String[] args)
 	{
 		InstructionWindow pp = new InstructionWindow();

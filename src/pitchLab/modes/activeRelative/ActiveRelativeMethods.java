@@ -6,14 +6,22 @@ import pitchLab.reference.Constants;
 import pitchLab.reference.DynmVar;
 import sound.Sine;
 
+/**
+ * This class defines the Active Pitch methods used in PitchLab's Active Pitch mode
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 20, 2009
+ */
 public class ActiveRelativeMethods
 {
 	
 	/**
-	 * 
-	 * @param xPos
-	 * @param firstTone
-	 * @param pw
+	 * Blends the notes together such that a smooth transition of notes is played
+     * as the user drags the bar accross the GUI piano window.
+     *
+	 * @param xPos The x coordinate of the bar in the piano window
+	 * @param firstTone The first random tone that will be played in the active relative test
+	 * @param pw The GUI piano window
 	 */
 	public static void blendNotes_arp(PianoWindow pw, int xPos, boolean firstTone)
 	{
@@ -25,7 +33,7 @@ public class ActiveRelativeMethods
 	}
 	
 	/**
-	 * 
+	 * Calls appropriate function to blend notes in the Active Relative test
 	 * @param pw
 	 * @param xPos
 	 */
@@ -36,7 +44,7 @@ public class ActiveRelativeMethods
 	}
 	
 	/**
-	 * 
+	 * Calculates and sets the two random frequencies that will be played for the Relative test.
 	 */
 	public static void ar_setIntervalToSet()
 	{
@@ -64,9 +72,10 @@ public class ActiveRelativeMethods
 		DynmVar.noteToSet = Calculations.getToneInterval(DynmVar.getFirstFreq(), DynmVar.getSecondFreq());
 	}
 	
-	/**
-	 * 
-	 * @param pw
+	/** 
+	 * Saves the first and second frequency that will be played in the Active Relative test.
+     *
+	 * @param pw The GUI piano window
 	 */
 	public static void ar_recordIntervalToSet(PianoWindow pw)
 	{
@@ -76,8 +85,10 @@ public class ActiveRelativeMethods
 	}
 	
 	/**
+     * Sets the piano window text to the currently selected note that will be set
+     * if the user hits enter.
 	 * 
-	 * @param pw
+	 * @param pw The GUI piano window
 	 */
 	public static void ar_rescaleAndPlay(PianoWindow pw)
 	{
@@ -94,7 +105,7 @@ public class ActiveRelativeMethods
 	
 	/**
 	 * 
-	 * @param pw
+	 * @param pw The GUI piano window
 	 */
 	public static void ar_rescalePlayTime(PianoWindow pw)
 	{
@@ -104,8 +115,7 @@ public class ActiveRelativeMethods
 	}
 	
 	/**
-     * 
-     * @return
+     * Returns an octave multiplier based on the minimum octave interval
      */
 	public static double getARScaleMinOctaveMultiplier()
 	{
@@ -113,8 +123,7 @@ public class ActiveRelativeMethods
 	}
 	
 	/**
-	 * 
-	 * @return
+     * Returns an octave multiplier based on the maximum octave interval
 	 */
 	public static double getARScaleMaxOctaveMultiplier()
 	{
@@ -122,7 +131,7 @@ public class ActiveRelativeMethods
 	}
 	
 	/**
-	 * 
+	 * Sets the cents scale
 	 */
 	public static void setARCentScale()
 	{
@@ -131,7 +140,8 @@ public class ActiveRelativeMethods
 	}
 	
 	/**
-	 * 
+	 * Sets the active base frequency based on the number of octaves and the maximum
+     * octave interval set.
 	 */
 	public static void setARActiveBaseFreq()
 	{
@@ -140,8 +150,8 @@ public class ActiveRelativeMethods
 	}
 	
 	/**
+	 * Returns a Sine frequency based on octave settings.
 	 * 
-	 * @return
 	 */
 	public static double getARtopFreq()
 	{
@@ -159,8 +169,9 @@ public class ActiveRelativeMethods
 	}
 	
 	/**
-	 * 
-	 * @param freq
+	 * Returns the <code>int</code> x coordinate value of the bar based on the 
+     * current frequency
+	 * @param freq The current frequency
 	 * @return
 	 */
 	public static int arFreqToX(double freq)
@@ -169,10 +180,9 @@ public class ActiveRelativeMethods
 	}
 	
 	/**
-	 * 
-	 * @param firstX
-	 * @param secondX
-	 * @return
+	 * Returns an interval based on the first and second bar positions
+	 * @param firstX The initial x-coordinate of the bar in the piano window
+	 * @param secondX The final x-cordinate of the bar in the piano window
 	 */
 	public static boolean acceptableInterval(int firstX,int secondX)
 	{

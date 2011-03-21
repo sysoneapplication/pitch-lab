@@ -1,16 +1,19 @@
 package sound;
-//
-//  Sine.java
-//  (Version 0.6)
-//
-//  Created by Gavin Shriver on 4/17/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
-//
-
 
 import javax.sound.sampled.*;   
 import java.util.*;
 
+/**
+ * The Sine class produces a sine wave based on a series of parameters
+ * that are used to generate the application notes.
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 27, 2009
+ *
+ *
+ * Copyright 2011 Vladimir Chaloupka. All rights reserved.
+ *
+ */
 public class Sine
 {
 	//******************************************************************************
@@ -73,30 +76,32 @@ public class Sine
 	// BEGIN CONSTRUCTORS
 	//******************************************************************************
 	
-	//------------------------------------------------------
-	// constructs blank Sine Object...
-	// 
-	//------------------------------------------------------
+    /**
+     * Contstructs a blank Sine Object and prints out <code>Exception</code> if anything 
+     * goes wrong.
+     */
 	public Sine()
 	{
 		try
 		{
 			line = (SourceDataLine)AudioSystem.getLine(INFO);
 			generateRands();
-		}//end try
+		}
 		catch (Exception e) 
 		{
 			System.out.println(e);
-		}//end catch
+		}
 		
-	}//END Sine()
+	}
 	
 	
-	//------------------------------------------------------
-	// constructs Sine Object with defaults for
-	// multi- random tone generation with random play
-	// and rest times
-	//------------------------------------------------------
+	/** 
+     * Constructs a Sine Object with defaults for
+	 * multi-random tone generation with random play
+	 * and rest times
+     *
+     * @param numRandTones The <code>int</code> amount of random tones to  to generate.
+	 */
 	public Sine(int numRandTones)
 	{
 		setNumRandTones(numRandTones);
@@ -105,18 +110,22 @@ public class Sine
 		try 
 		{
 			line = (SourceDataLine)AudioSystem.getLine(INFO);
-		}//end try
+		}
 		catch (Exception e) 
 		{
 			System.out.println(e);
-		}//end catch
+		}
 		
-	}//END Sine()
+	}
 	
-	//------------------------------------------------------
-	// constructs Sine Object with defaults for
-	// multi- random tone generation finite play and rest times
-	//------------------------------------------------------
+	/**
+     * Constructs a Sine Object with defaults for
+     * multi-random tone generation with finite play and rest times
+     *
+     * @param numRandTones The <code>int</code> number of random tones
+     * @param finiteToneTime The <code>double</code> duration of the tone 
+     * @param finiteRestTime The <code>double</code> duration of the rest between tones
+     */
 	public Sine(int numRandTones, double finiteToneTime, double finiteRestTime)
 	{
 		setNumRandTones(numRandTones);
@@ -129,26 +138,26 @@ public class Sine
 		try 
 		{
 			line = (SourceDataLine)AudioSystem.getLine(INFO);
-		}//end try
+		}
 		catch (Exception e) 
 		{
 			System.out.println(e);
-		}//end catch
+		}
 		
-	}//END Sine()
-	
-	
+	}
+
 	//******************************************************************************
-	// END CONSTRUCTORS
+	// END CONSTRUCTORS METHOD
 	// BEGIN PLAY METHODS
 	//******************************************************************************
-
 	
 	
-	//------------------------------------------------------
-	// Plays a frequency for a particular duration 
-	// without creating a Sine object
-	//------------------------------------------------------
+	/**
+     * Plays a frequency for a particular duration 
+     * without creating a Sine object
+     * @param frequency The frequency to be generated
+     * @param seconds The duration the generated frequency should last
+     */
 	public static void play(double frequency, double seconds)
 	{
 		byte[] toneBuffer = buildBuffer(frequency, seconds);
@@ -166,13 +175,13 @@ public class Sine
 			System.out.println("Error Processing Sound in Sine: ");
 			e.printStackTrace();
 		}
-	}//END play()
+	}
 	
 			
-	//------------------------------------------------------
-	// Plays a number of random frequencies for random
-	// durations with random intervals
-	//------------------------------------------------------ 
+	/**
+     * Plays a number of random frequencies for random
+     * durations with random intervals!
+     */
 	public void play()
 	 {
 		 byte[] toneBuffer;
@@ -195,7 +204,7 @@ public class Sine
 				 toneBuffer = buildBuffer(randFreqs[i], toneTimeGenerator());
 				 line.write(toneBuffer, 0, toneBuffer.length);
 
-			 }//end  for(i)
+			 }
 			 
 			 // --- final rest before next test
 			 restBuffer = buildRest(restTimeGenerator());
@@ -212,13 +221,15 @@ public class Sine
 			 e.printStackTrace();
 			 System.exit(0);
 		 }
-		 
 		 generateRands();
-		 
 	 }
 	
 	
-	// this is a failed experiment.. left here anyway
+	/**
+     * This is a failed experiment left here for future reference
+     *
+     * @deprecated Never used.
+     */
 	public void blend()
 	 {
 		 byte[] toneBuffer = new byte[sampleRate]; //so it will play for one second
@@ -265,10 +276,11 @@ public class Sine
 	// BEGIN SOUND METHODS
 	//******************************************************************************
 	
-	//------------------------------------------------------
-	// buildBuffer(frequency, seconds)
-	// - builds any tone given a frequency and duration
-	//------------------------------------------------------ 
+	/**
+     * Builds any tone given a frequency and duration with some fancy mathematics
+     * @param frequency The frequency to generate
+     * @param seconds The duration of the generated frequency
+     */
 	private static byte[] buildBuffer(double frequency, double seconds)
 	{
 		int bufferSize = (int)(seconds*sampleRate*sampleSizeInBytes);
@@ -302,10 +314,10 @@ public class Sine
 	}
 	
 
-	//------------------------------------------------------
-	// buildRest(seconds)
-	// - builds a rest given a duration
-	//------------------------------------------------------ 
+	/**
+     * Builds a rest given a duration between generated frequencies.
+     * @param seconds The duration of the rest
+     */
 	private static byte[] buildRest(double seconds)
 	{
 		int restSize =  (int)(seconds*sampleRate*sampleSizeInBytes);
@@ -313,13 +325,12 @@ public class Sine
 		byte[] buildRest = new byte[restSize];
 		Arrays.fill(buildRest, (byte)0);
 		return buildRest;
-	}//END buildRest
+	}
 
 	
-	//------------------------------------------------------
-	// generateRands()
-	// - builds arrays of random values
-	//------------------------------------------------------ 
+	/**
+     * Builds arrays of random values
+     */
 	private void generateRands()
 	{
 		randFreqs = new double[numRandTones];
@@ -330,17 +341,16 @@ public class Sine
 				randFreqs[i] = randFreqGenerator();
 			} while (i > 0 && Math.abs(randFreqs[i] - randFreqs[i-1]) < minFreqSeperation);				
 		}
-	}//END generateRands()
+	}
 	
-	//------------------------------------------------------
-	// randFreqGenerator()
-	// - returns a random frequency within specs.
-	// - specifications: default to global min & max bounds
-	//------------------------------------------------------ 
+	/**
+     * Returns a random frequency within specifications.
+     * Defaults to global min and max bounds
+     */
 	public static double randFreqGenerator()
 	{		
 		return randFreqGenerator(Sine.minFreqBounds,Sine.maxFreqBounds);
-	}//END randFreqGenerator
+	}
 	public static double randFreqGenerator(double minFreq, double maxFreq)
 	{
 		return (maxFreq-minFreq)*random.nextDouble() + minFreq;
@@ -357,11 +367,10 @@ public class Sine
 		return randFreqGenerator;
 	}//END randFreqGenerator*/
 	
-	//------------------------------------------------------
-	// toneTimeGenerator()
-	// - returns 'finiteToneTime' if finiteTimes is set
-	// - otherwise returns random duration for a tone within specs.
-	//------------------------------------------------------ 
+	/**
+     * Returns 'finiteToneTime' if finiteTimes is set
+     * otherwise returns random duration for a tone within specifications.
+     */
 	private double toneTimeGenerator()
 	{
 		if (finiteTimes)
@@ -375,14 +384,13 @@ public class Sine
 			} while (toneTimeGenerator < minToneTime);
 			return toneTimeGenerator;
 		}
-	}//END toneTimeGenerator;
+	}
 	
 	
-	//------------------------------------------------------
-	// restTimeGenerator()
-	// - returns 'finiteRestTime' if finiteTimes is set
-	// - otherwise returns random duration for a rest within specs.
-	//------------------------------------------------------ 
+	/**
+     * Returns 'finiteRestTime' if finiteTimes is set
+     * otherwise returns random duration for a rest within specifications.
+     */
 	private double restTimeGenerator()
 	{
 		//returns the "finite time" if (finiteTimes== true)
@@ -401,10 +409,10 @@ public class Sine
 		}
 	}
 	
-	//------------------------------------------------------
-	// getRelativeOctaveFrequency()
-	// - returns frequency of octave +/- base octave
-	//------------------------------------------------------ 
+	/**
+     * Returns frequency of octave +/- base octave
+     * @param relOctave Determines whether to move up or down an octive.
+     */
 	public static double getRelativeOctaveFrequency(int relOctave)
 	{
 		return getRelativeOctaveFrequency((double)relOctave);
@@ -425,52 +433,82 @@ public class Sine
 	// BEGIN SET/GET METHODS
 	//******************************************************************************
 	
-	//------------------------------------------------------
-	// --- STANDARD VARIABLES
-	//------------------------------------------------------ 
+	/**
+     * Set number of random tones
+     * @param numRandTones The <code>int</code> number of random tones
+     */
 	public static void setNumRandTones(int numRandTones)
 	{
 		Sine.numRandTones = numRandTones;
 	}
+    /**
+     * Return the number of random tones.
+     */
 	public static int getNumRandTones()
 	{
 		return Sine.numRandTones;
 	}
 	
-	//------------------------------------------------------
-	// --- FREQUENCY RESTRICTIONS
-	//------------------------------------------------------ 
+	/**
+     * Set the minimum frequency bounds 
+     * @param minFreqBounds The minimum frequency allowed
+     */
 	private static void  setMinFreqBounds(double minFreqBounds)
 	{
 		Sine.minFreqBounds = minFreqBounds;
 	}
+    /**
+     * Returns the minimum frequency allowed
+     */
 	public static double  getMinFreqBounds()
 	{
 		return Sine.minFreqBounds;
 	}
 	
+	/**
+     * Set the maximum frequency bounds 
+     * @param maxFreqBounds The maximum frequency allowed
+     */
 	private static void  setMaxFreqBounds(double maxFreqBounds)
 	{
 		Sine.maxFreqBounds = maxFreqBounds;
 	}
+	/**
+     * Return the maximum frequency bounds 
+     */
 	public static double  getMaxFreqBounds()
 	{
 		return Sine.maxFreqBounds;
 	}
 	
+    /**
+     * Set the minimum frequency seperation between the maximum and minimum 
+     * frequencies allowed.
+     * @param minFreqSeperation The minimum frequency seperation allowed.
+     */
 	public static void setMinFreqSeperation(double minFreqSeperation)
 	{
 		Sine.minFreqSeperation = minFreqSeperation;
 	}
+    /**
+     * Return minimum frequency seperation allowed
+     */
 	public static double  getMinFreqSeperation()
 	{
 		return Sine.minFreqSeperation;
 	}
 	
+    /**
+     * Set the finite times 
+     * @param finiteTimes The <code>boolean</code> that sets finiteTimes
+     */
 	public static void setFiniteTimes(boolean finiteTimes)
 	{
 		Sine.finiteTimes = finiteTimes;
 	}
+    /**
+     * Returns the finite times boolean
+     */
 	public static boolean  getFiniteTimes()
 	{
 		return Sine.finiteTimes;
@@ -585,6 +623,9 @@ public class Sine
 		return Sine.useDynAmp ;
 	}
 	
+    /**
+     * Set the Sine object default values
+     */
 	public static void setDefaults()
 	{
 		// - random tone constraints
@@ -661,6 +702,11 @@ public class Sine
 	//******************************************************************************
 	
 	//-- mk's method:
+    /**
+     * Set the Sine amplitude based on its frequency and fancy mathematics
+     * @param freqNlog The <code>double</code> that determines what amplitude value is returned.
+     *
+     */
 	private static double sineAmplitude(double freqNlog)
 	{
 		double	amp, spl;
@@ -733,6 +779,9 @@ public class Sine
 	
 	
 	
+    /**
+     * Create the Sine object
+     */
 	public static void main(String[] args) 
 	{
 		

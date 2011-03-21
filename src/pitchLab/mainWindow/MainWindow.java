@@ -1,18 +1,4 @@
 package pitchLab.mainWindow;
-//
-//  MainWindow.java
-//  ( Version )
-//	 This is a messy class.. I had planed to clean things up, but never got to it. 
-//	 would be good to separate each pane (prefs et al. ) to seperate classes
-// 
-// 	
-//
-//  Created by Gavin Shriver on 4/9/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
-//
-//	
-//
-//
 
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
@@ -40,6 +26,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.JComboBox;
 
 import common.EntryBox;
 import common.GUIMethods;
@@ -51,6 +38,14 @@ import pitchLab.reference.DynmVar;
 import server.ServerSideLaunch;
 import sound.Sine;
 import sound.SineContinuous;
+
+/**
+ * The MainWindow class produces the main GUI window for the PitchLab application.
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 9, 2009
+ *
+ */
 
 public class MainWindow extends JPanel implements ActionListener, ItemListener
 {
@@ -127,6 +122,8 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 	private JRadioButton passive_relative = new JRadioButton("Passive Relative Pitch");
 	private ButtonGroup modeGroup = new ButtonGroup();
 	
+    private JComboBox dropdown = new JComboBox(Constants.AVAILABLE_INSTRUMENTS);
+    
 	private static Checkbox practiceMode = new Checkbox("Practice Mode", false);
 	private static Checkbox userSetsCents = new Checkbox("Use Notes +/- Cents ?", false);
 	private Checkbox upAndDown_RS = new Checkbox("Identify increasing AND decreasing intervals ?", DynmVar.upAndDown_RS);
@@ -167,6 +164,15 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 	 * END Variables
 	 ********************************************************************************/
 	
+    /** 
+     * This GUI window is a JPanel with a two-tabbed interface: Main and Settings.
+     * The class defines the layout of the window along with the text, fields and options
+     * available when launching PitchLab.
+     * 
+     * The class also binds all the event handlers for interacting with buttons. 
+     *
+     * For future reference - this is where one should change the UI for PitchLab.
+     */
 	
     public MainWindow() 
 	{
@@ -200,7 +206,12 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 	 * END Constructors
 	 * Begin (MY) Helpers
 	 ********************************************************************************/
-	
+
+    /**
+     * Returns the GUI panel for PitchLab for the Main Tab window.
+     * Attaches the action listeners to the GUI for user interactivity and 
+     * applies the buttons and labels to the panel itself.
+     */
     private JComponent makeMainPanel()
     {
     	startButton.addActionListener(this);
@@ -216,8 +227,7 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
     	modeGroup.add(passive_pitch);
     	modeGroup.add(active_relative);
     	modeGroup.add(passive_relative);
-    	
-    	
+    	    	
     	syncResultsGroup.add(syncResults);
     	syncResultsGroup.add(noSyncResults);
     	JLabel aboutSync = new JLabel("       (view Privacy Policy)");
@@ -242,8 +252,7 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
     	buttPan.add(startButton);
     	buttPan.add(exitButton);*/
     	panel.add(GUIMethods.flowMaker(startButton, exitButton) ,BorderLayout.SOUTH);
-    	
-    	
+  
     	JPanel buttPan2 = new JPanel(new GridLayout(0,1));
     	buttPan2.add(new JLabel(""));
     	buttPan2.add(new JLabel("<html><b>Select Test Type:</b></html>"));
@@ -252,6 +261,9 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
     	buttPan2.add(passive_relative);
     	buttPan2.add(active_relative);
     	buttPan2.add(new JLabel(""));
+    	buttPan2.add(new JLabel("<html><b>Select Instrument Type:</b></html>")); 
+    	buttPan2.add(dropdown);
+     	buttPan2.add(new JLabel(""));
     	buttPan2.add(new JLabel("<html> <b>Test Options:</b></html>"));
     	buttPan2.add(practiceMode);
     	buttPan2.add(userSetsCents);
@@ -275,6 +287,11 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
     }
     
 	
+    /**
+     * Returns the GUI panel for PitchLab for Settings Tab window.
+     * Attaches the action listeners to the GUI for user interactivity and 
+     * applies the buttons and labels to the panel itself.
+     */
 	//----------------------------------- Settings Pannel
 	private JComponent makeSettingsPanel()
 	{
@@ -297,6 +314,7 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 		applyButton.addActionListener(this);
 		resetButton.addActionListener(this);
 		defaultsButton.addActionListener(this);
+		dropdown.addActionListener(this);
 		
 		// adds buttons to button panel
 		buttonPanel.add(applyButton);
@@ -331,7 +349,12 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 		intitializeAll();
 		return panel;
 	}	
-	
+
+    /**
+     * Returns the GUI panel for PitchLab for the Advanced Settings tab window.
+     * Attaches the action listeners to the GUI for user interactivity and 
+     * applies the buttons and labels to the panel itself.
+     */
 	protected JComponent createAdvancedSoundSettings()
 	{
 		JPanel panel = new JPanel();
@@ -506,16 +529,24 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 	}
 
 	
+    /**
+     * Sets the settings back to the defaults.
+     */
 	private void setToDefaults()
 	{
 	//	MailUtil.setDefaults();
 		Sine.setDefaults();
 		SineContinuous.setDefaults();
 		DynmVar.setDefaults();
+		dropdown.setEnabled(true);
 		
 		resetSettings();
 	}
+
 	
+    /**
+     * Resets the settings.
+     */
 	private void resetSettings()
 	{
 		//        MAIN WINDOW SETTINGS
@@ -523,7 +554,8 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 		userSetsCents.setState(false);
 		upAndDown_RS.setState(DynmVar.upAndDown_RS);
 		windowWidth.setSelected(shortWindow.getModel(), true );
-		syncResultsGroup.setSelected(syncResults.getModel(), true);
+		syncResultsGroup.setSelected(noSyncResults.getModel(), true);
+		syncResults.setEnabled(false);
 		modeGroup.setSelected(passive_pitch.getModel(), true);
 
 		//        STANDARD SETTINGS
@@ -592,6 +624,11 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 		return emailz;
 	}	*/
 	
+    /**
+     * Set the window width based on 'Test Window Size' settings from the Main window 
+     * Long Window is defined for 'High resolution screens'
+     * Short Window is defined for 'Low resolution screens'
+     */
 	private void setWindowWidth()
 	{
 		if( windowWidth.getSelection() == longWindow.getModel())
@@ -601,11 +638,13 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 		
 	}
 	
-	//
-	//	START THE DAMN THING!
-	//
+    /**
+     * Gathers the settings and opens the Piano Window to begin a PitchLab test.
+     * Settings include whether or not to sync the results and window width.
+     */
 	private void starter()
 	{
+        System.out.println("Starting PitchLab Test");
 		DynmVar.upAndDown_RS = (upAndDown_RS.getState());
 		DynmVar.userSetCents = (userSetsCents.getState());
 		
@@ -638,6 +677,13 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 			finiteToneTime.setEnabled(false);
 			finiteRestTime.setEnabled(false);
 		}
+
+		if(modeGroup.getSelection() == passive_pitch.getModel()) {
+			dropdown.setEnabled(true);
+		} else {
+			dropdown.setEnabled(false);
+			DynmVar.instrument = "Sine";
+		}
 			
 		 if (modeGroup.getSelection() == active_relative.getModel() || modeGroup.getSelection() == active_pitch.getModel())
 			 userSetsCents.setEnabled(true);
@@ -650,7 +696,9 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 			 upAndDown_RS.setEnabled(false);
 	}
 	
-	
+    /**
+     * Gathers the selected value from the 'Select Test Type' radio buttons.
+     */
 	private int getMode()
 	{
 		int mode = 0;
@@ -669,11 +717,19 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 		return mode;
 	}
 	
-	/********************************************************************************
-	 * END Local Getter/ Setters
-	 * Begin Event Handlers
-	 ********************************************************************************/
+    // END Local Getter/ Setters
+    // Begin Event Handlers
 	
+    /**
+     * Sets the BoxGrays and number of cycles to be performed in the Piano Window.
+     * The number of cycles is hard-coded here and has two different values: 
+     * 10 if PitchLab is in practice mode and 55 if PitchLab is not in practice mode.
+     *
+     * @param e An <code>ItemEvent</code> that contains the Practice Mode boolean. 
+     *          If the boolean is true, PitchLab will adjust itself to accommodate 
+     *          the user preferences.  
+     *
+     */
     public void itemStateChanged(ItemEvent e) 
     {
        setBoxGrays();
@@ -694,11 +750,19 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
        
     }
 	
-	
+	/**
+	 * Sets the action that will be performed based on the event parameter.
+     * 
+     * @param e The type of action that governs what the method will do.
+	 */
 	public void actionPerformed(ActionEvent e) 
 	{		
 		
-		if (applyButton == e.getSource())
+        if(dropdown == e.getSource())
+        {
+            DynmVar.instrument = (String)dropdown.getSelectedItem();
+        } 
+        else if (applyButton == e.getSource())
 		{
 			setSettings();
 		}
@@ -778,6 +842,10 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
         frame.setVisible(true);
     }
     
+    /**
+     * Create and run the application GUI.
+     * Globally disables bold fonts from the UI as well.
+     */
     public static void main(String[] args) 
     {
         //Schedule a job for the event dispatch thread:

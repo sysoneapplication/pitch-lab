@@ -2,9 +2,15 @@ package pitchLab.instructWindow;
 
 import java.awt.Dimension;
 
+/**
+ * The IWConsts generates the Instruction Window constants for the user interface.
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 9, 2009
+ *
+ */
 public class IWConsts
 {
-
 	public static final String DISP_CUR_TO_SET = 	"Value to set:       ";
 	public static final String DISP_PREV_TO_SET = 	"Previous solution:  ";
 	public static final String DISP_CUR_SEL = 		"Current selection:  ";

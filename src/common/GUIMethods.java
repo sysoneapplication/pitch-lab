@@ -19,13 +19,17 @@ public class GUIMethods
 	public static int SOUTH = GridBagConstraints.SOUTH;
 	public static int SOUTHEAST = GridBagConstraints.SOUTHEAST;
 	public static int SOUTHWEST = GridBagConstraints.SOUTHWEST;
+
 	/**
-	 * 
-	 * @param compons
-	 * @param bagHeader
-	 * @param center
-	 * @return
+	 * Returns a JPanel object with a GridBagLayout 
+     *
+	 * @param compons JComponent fields that get added to the panel object.
+	 * @param bagHeader Sring that is used to set the Title of the panel object.
+	 * @param center A boolean that determines GridBagConstraints parameters
+	 * @return A JPanel object with a GridBagLayout
+     *
 	 */
+
     public static JComponent makeBag(JComponent[] compons,String bagHeader, boolean center)  
     //public static JComponent makeBag(JComponent[] compons,String bagHeader, int location)  
 	{
@@ -65,10 +69,11 @@ public class GUIMethods
     }
     
     /**
-     * 
-     * @param obj1
-     * @param obj2
-     * @return
+     * Returns a JPanel object with a FlowLayout with at least one JComponent object
+     *
+     * @param obj1 A supplied JComponent object that will always be added to the instantiated panel
+     * @param obj2 A secondary JComponent object that will not be added to the panel if <code>null</code>
+     * @return A JPanel object with a FlowLayout
      */
 	public static JComponent flowMaker(JComponent obj1, JComponent obj2)
 	{

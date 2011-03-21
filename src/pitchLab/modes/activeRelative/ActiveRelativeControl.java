@@ -10,27 +10,48 @@ import pitchLab.pianoWindow.PianoWindow;
 import pitchLab.reference.Calculations;
 import pitchLab.reference.DynmVar;
 
+/**
+ * This class defines the Passive Pitch mode used in PitchLab
+ * 
+ * [XXX] This class contains 95% of the same codes as ActivePitchControl,
+ *       maybe make a PitchControl Class then extend it accordingly for
+ *       the Active and Passive modes?
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 20, 2009
+ */
 public class ActiveRelativeControl extends pitchLab.pianoWindow.PianoWindowListener
 { 
 	
 	private PianoWindow pw;
 	private boolean firstTone = false;
 	private int state = 0;
-	/*
-	 * SWITCH STATEMENT state MODES
-	 * case 0:	haven't started yet
-	 * case 1: 	Working/Busy/Random Tones Playing
-	 * case 2:	single note playing, user needs to drag bar to location, enter confirms choice
-	 * case 3:	means user can drag the bar! (ie: pressed in the correct location)
-	 * case 4:  user hasn't heard first tone yet
-	 * case 5: 	user hasn't heard second tone yet
-	 * case 6:	user hasn't made bar appear yet
-	 */
+
+    /**
+     * Sets the configuration for PitchLab such that Active Relative mode is 
+     * enabled and its methods are utilized.
+     * Unlike the Active Pitch Control, there is not practice boolean in this 
+     * method.
+     *
+     * @param pw The GUI piano window interface
+     */
 	public ActiveRelativeControl(PianoWindow pw)
 	{
 		this.pw = pw; 
 	}
 
+    /**
+     * When the user triggeres a mouse down event on the piano window,
+     * the x position is stored into memory and the dragged distance
+     * is calculated.
+     *
+     * [TODO] check if the user's cursor is in the set margins?
+     *
+     * While the line is being dragged across the piano window the cursor
+     * changes to the Resize cursor to visually indicate dragging.
+     *
+     * @param e The mouse click event 
+     */
 	public void mousePressed(MouseEvent e)
 	{
         int x = e.getX();   // Save the x coord of the click	
@@ -50,7 +71,12 @@ public class ActiveRelativeControl extends pitchLab.pianoWindow.PianoWindowListe
         } 
 	}
 	
-	
+    /**
+     * Mouse drag event which updates the x-coordinate of the line in memory
+     * and by how much the line has been dragged.
+     * Repaints the GUI piano window to visiually represent where the on the
+     * window the user's bar is.
+     */
 	public void mouseDragged(MouseEvent e)
 	{
 	    if (state == 3) 
@@ -73,7 +99,9 @@ public class ActiveRelativeControl extends pitchLab.pianoWindow.PianoWindowListe
 		}
 	}
 	
-	
+    /**
+     * Mouse up event adjusts the state accordingly.
+     */
 	public void mouseReleased(MouseEvent e)
 	{
 		if (state == 3)
@@ -81,6 +109,19 @@ public class ActiveRelativeControl extends pitchLab.pianoWindow.PianoWindowListe
 		
 	}
 
+    /**
+     * Key press event which switches based on the current state, the states are indicated
+     * as follows:
+     *
+	 * case 0:	The PitchLab test hasn't started yet
+	 * case 1: 	Working/Busy/Random Tones Playing
+	 * case 2:	Single note playing, user needs to drag bar to location, enter confirms choice
+	 * case 3:	Means user can drag the bar! (ie: pressed in the correct location)
+	 * case 4:  User hasn't heard first tone yet
+	 * case 5: 	User hasn't heard second tone yet
+	 * case 6:	User hasn't made bar appear yet
+     *
+     */
 	public void keyPressed(KeyEvent e)
 	{
 		switch (e.getKeyCode())
@@ -89,15 +130,15 @@ public class ActiveRelativeControl extends pitchLab.pianoWindow.PianoWindowListe
 			{
 				switch (state)
 				{
-					case 0: //havent started yet
-						state = 1; // state is busy
+					case 0:
+						state = 1; 
 						cycleAndPlay();
-						state = 4; //set state waiting for them
+						state = 4;
 				    	break;
-					case 2:  //end of cycle etc
+					case 2:
 					{
-						state = 1;  //set working
-						long now = System.currentTimeMillis();	//FIRST get the time!
+						state = 1;
+						long now = System.currentTimeMillis();
 						int x = DynmVar.dragBarX;
 					
 						if(DynmVar.syncResults)
@@ -114,7 +155,7 @@ public class ActiveRelativeControl extends pitchLab.pianoWindow.PianoWindowListe
 							DynmVar.count++;
 							pw.setTitle("Testing... Completed "+DynmVar.count+" of "+ DynmVar.cycles +" cycles.");
 							cycleAndPlay();
-							state = 4; //set back to idle 
+							state = 4;
 						}
 						else
 							pw.exit();
@@ -146,15 +187,22 @@ public class ActiveRelativeControl extends pitchLab.pianoWindow.PianoWindowListe
 				}
 				
 				break;
-			}//end case
-		}//end key switch
-	}//end key pressed
+			}
+		}
+	}
 
+    /**
+     * The key up event that triggers the playing of the selected tone.
+     *
+     * If the '1' (or the first key) is pressed, then play the first tone
+     * otherwise play the second.
+     *
+     */
 	public void keyReleased(KeyEvent e)
 	{
 		switch (e.getKeyCode())
 		{
-			case KeyEvent.VK_1: //play first tone
+			case KeyEvent.VK_1:
 			{
 				if(pw.contSine.getPlaying(DynmVar.getFirstFreq()))
 				{
@@ -164,7 +212,7 @@ public class ActiveRelativeControl extends pitchLab.pianoWindow.PianoWindowListe
 				}
 				break;
 			}//end case
-			case KeyEvent.VK_2: //play second tone
+			case KeyEvent.VK_2:
 			{
 				if(!firstTone)
 				{
@@ -173,18 +221,18 @@ public class ActiveRelativeControl extends pitchLab.pianoWindow.PianoWindowListe
 					//	state = 2;
 				}
 				break;
-			}//end case
+			}
 			
-		}//end switch
-	}//end key released
+		}
+	}
 	
 	
 	
 	
-	//
-	//	CYCLE AND PLAY
-	//
-	
+    /**
+     * Hides the drag bar intiially and sets the two frequencies that
+     * will be played.
+     */
 	private void cycleAndPlay()
 	{
 		pw.setDragBarVisible(false);

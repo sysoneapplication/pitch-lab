@@ -1,20 +1,15 @@
 package pitchLab.reference;
-//
-//	DynmVar.java
-//	
-//	this class is a static class purely for variables shared among other/many classes etc. 
-//
-//	Created by Gavin Shriver on 1/7/10.
-//
+
+/**
+ * This class is a static class purely for variables shared among other classes. 
+ *
+ * @author Gavin Shriver
+ * @version 0.6 April 7, 2009
+ */
+
 public class DynmVar
 {
-	
-	//
-	//	PIANO WINDOW IMPORTANT JUNK
-	//
-	//
 	//	PIANO WINDOW SETTINGS
-	//
 	// ---	drawing settings:
 	public static int window_Width = 1300;
 	public static int tickSpacing;// = (int)(window_Width/Constants.DEF_NUM_TICKS);
@@ -22,11 +17,21 @@ public class DynmVar
 	// --- 	sound related:
 	public static double centScaling;//s = (double)Constants.CENT_FULL_SCALE/(double)window_Width;
 	
+    /**
+     * Sets the window width
+     *
+     * @param window_Width The window width to set in pixels
+     */
 	public static void setWindow_Width(int window_Width)
 	{
 		DynmVar.window_Width = window_Width;
 		calcVars();
 	}
+
+    /**
+     * Calculates the adjustments necessary based on a a windows width.
+     * Adjustments include the tick spacing and cent scaling.
+     */
 	private static void calcVars()
 	{
 		tickSpacing = (int)(window_Width/Constants.DEF_NUM_TICKS);
@@ -35,21 +40,18 @@ public class DynmVar
 		centScaling = (double)Constants.CENT_FULL_SCALE/(double)window_Width;
 	}
 	
-	//
 	//	GENERAL TEST SETTINGS: mode, sync, setCents
-	//
 	public static int mode = 0;
+	public static String instrument = "Sine";
 	public static boolean syncResults = true;
 	public static boolean userSetCents = true;
 	public static boolean upAndDown_RS = true;
 	
-	//
 	//	RELATIVE SETTINGS 
-	//
 	public static int minRelCentInterval = 100;	
 	public static int maxRelCentInterval = 1200;
 	
-	//note these are octave intervals, not the multipliers.
+	//  Octave intervals (not the multipliers)
 	public static double ARScaleMinOctaveInterval = 0.5;
 	public static double ARScaleMaxOctaveInterval = 2.0;
 	
@@ -62,18 +64,7 @@ public class DynmVar
 		DynmVar.ARScaleMaxOctaveInterval = 2.0;
 	}
 	
-	
-
-	
-	/***************************************************************
-	 * 
-	 * 	WHILE RUNNING VARIABLS
-	 * 
-	 ****************************************************************/
-	
-	//
 	//	IN TEST VARIABLES
-	//
 	public static long cycleStartTime;
 	public static int cycles;
 	public static int count = 0;
@@ -132,7 +123,4 @@ public class DynmVar
 	{
 		variableBank[4] = centScale;
 	}
-	
-	
-	
 }
