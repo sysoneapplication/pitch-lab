@@ -554,7 +554,8 @@ public class MainWindow extends JPanel implements ActionListener, ItemListener
 		userSetsCents.setState(false);
 		upAndDown_RS.setState(DynmVar.upAndDown_RS);
 		windowWidth.setSelected(shortWindow.getModel(), true );
-		syncResultsGroup.setSelected(syncResults.getModel(), true);
+		syncResultsGroup.setSelected(noSyncResults.getModel(), true);
+		syncResults.setEnabled(false);
 		modeGroup.setSelected(passive_pitch.getModel(), true);
 
 		//        STANDARD SETTINGS
